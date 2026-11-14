@@ -10,8 +10,8 @@ SAR-BRIDGE AI compares two real NISAR L-band radar observations of the Mingachev
 
 | Panel | Content |
 |---|---|
-| Plate 1 · map | NISAR HH / HV backscatter for both dates with a draggable before/after slider carrying the acquisition dates (Sentinel-2 true colour as an optional alternative), detected water gain/loss, insufficient-data areas, 10 clickable sectors, lat/lon graticule |
-| Plate 2 · axis profile | Water gained (up) and lost (down) in each sector, laid out along the reservoir from the NW inflow end to the SE dam; click a column to open that sector |
+| Map | NISAR HH / HV backscatter for both dates with a draggable before/after slider labelled with the acquisition dates (Sentinel-2 true colour as an optional alternative), detected water gain/loss, insufficient-data areas, 10 clickable sectors, and a γ⁰ backscatter scale in the legend |
+| Sector chart | Water gained (up) and lost (down) in each sector, from the NW inflow end to the SE dam; click a column to open that sector |
 | Change statistics | Total water gain and loss (ha), sectors analysed, valid-data coverage, same-day NISAR vs Sentinel-2 agreement |
 | AI analysis card | For the whole area or a selected sector: (1) detected change, (2) AI interpretation and ranked hypotheses, (3) supporting evidence, (4) missing evidence, (5) conclusion: *Supported hypothesis*, *Plausible but unconfirmed* or *Insufficient evidence* |
 | Methodology & data | Granule IDs, acquisition times, polarisations, the full NISAR acquisition inventory, processing steps, thresholds, evidence rules, sources, limitations |

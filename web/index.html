@@ -2,95 +2,91 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>SAR-BRIDGE AI</title>
-  <meta name="description" content="A field report on surface water at Mingachevir Reservoir, Azerbaijan: read by NASA-ISRO NISAR radar, argued with evidence.">
+  <meta name="description" content="Where Mingachevir Reservoir's water changed between two NASA-ISRO NISAR radar passes, and which explanations the evidence supports.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23f2ede3'/><circle cx='16' cy='16' r='11' fill='none' stroke='%2316181b' stroke-width='2'/><path d='M16 16 L25 9' stroke='%23e4572e' stroke-width='3'/><circle cx='16' cy='16' r='2.5' fill='%2316181b'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230f766e'/><path d='M8 21a8 8 0 0 1 16 0M12 21a4 4 0 0 1 8 0' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'/></svg>">
 </head>
 <body>
-<header class="mast">
-  <div class="mast-row">
-    <div class="wordmark">
-      <svg class="glyph" viewBox="0 0 40 40" aria-hidden="true">
-        <circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <circle cx="20" cy="20" r="10.5" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2.5"/>
-        <path class="sweep" d="M20 20 L34 11" stroke="#e4572e" stroke-width="2.4" stroke-linecap="square"/>
-        <circle cx="20" cy="20" r="2.6" fill="currentColor"/>
-      </svg>
-      <div>
-        <div class="name">SAR&#8209;BRIDGE <span>AI</span></div>
-        <div class="dek">A field report on surface water at <em>Mingəçevir Reservoir</em>, Azerbaijan: read by radar, argued with evidence.</div>
-      </div>
-    </div>
-    <div class="mast-actions">
-      <span class="stamp-top" title="Both NISAR scenes are Provisional data-maturity products">Provisional data</span>
-      <button id="btn-method" class="btn-ink">Methods &amp; sources</button>
-    </div>
+<header class="topbar">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="var(--accent)"/><path d="M8 21a8 8 0 0 1 16 0M12 21a4 4 0 0 1 8 0" fill="none" stroke="var(--on-accent)" stroke-width="2.4" stroke-linecap="round"/></svg>
+    <span class="name">SAR-BRIDGE AI</span>
   </div>
-  <div class="ticker" id="ticker">NASA–ISRO NISAR · L-band SAR · loading…</div>
+  <p class="context" id="context">Mingachevir Reservoir, Azerbaijan</p>
+  <div class="actions">
+    <span class="pill pill-warn" title="Both NISAR scenes are Provisional data-maturity products">Provisional data</span>
+    <button id="btn-method" class="btn" type="button">Method &amp; data</button>
+  </div>
 </header>
 
-<main class="sheet">
-  <section class="plate" aria-label="Map">
-    <div class="plate-bar">
-      <div class="fig"><span class="figno">Plate 1</span> Radar backscatter: before <span class="bar-sep">|</span> after</div>
-      <div class="tools">
-        <div class="tabs" id="imagery-seg" role="radiogroup" aria-label="Imagery">
-          <button data-img="HH" class="on" role="radio" aria-checked="true">HH</button>
-          <button data-img="HV" role="radio" aria-checked="false">HV</button>
-          <button data-img="S2" role="radio" aria-checked="false" title="Optical cross-check">Optical</button>
-        </div>
-        <label class="tick"><input type="checkbox" id="chk-slider" checked><span>Slider</span></label>
-        <label class="tick"><input type="checkbox" id="chk-change" checked><span>Change</span></label>
-        <label class="tick"><input type="checkbox" id="chk-sectors" checked><span>Sectors</span></label>
-        <label class="tick"><input type="checkbox" id="chk-osm"><span>OSM outline</span></label>
+<main class="app">
+  <section class="map-area" aria-label="Map">
+    <div id="map"></div>
+
+    <div class="toolbar" role="group" aria-label="Map layers">
+      <div class="seg" id="imagery-seg" role="radiogroup" aria-label="Imagery">
+        <button type="button" data-img="HH" class="on" role="radio" aria-checked="true">Radar HH</button>
+        <button type="button" data-img="HV" role="radio" aria-checked="false">Radar HV</button>
+        <button type="button" data-img="S2" role="radio" aria-checked="false">Optical</button>
+      </div>
+      <div class="toggles">
+        <label class="tg"><input type="checkbox" id="chk-slider" checked> Compare</label>
+        <label class="tg"><input type="checkbox" id="chk-change" checked> Change</label>
+        <label class="tg"><input type="checkbox" id="chk-sectors" checked> Sectors</label>
+        <label class="tg"><input type="checkbox" id="chk-osm"> OSM outline</label>
       </div>
     </div>
 
-    <div class="frame" id="frame">
-      <div class="grat grat-top" id="grat-top" aria-hidden="true"></div>
-      <div class="grat grat-left" id="grat-left" aria-hidden="true"></div>
-      <div class="map-box">
-        <div id="map"></div>
-        <div id="divider" class="divider" aria-hidden="true">
-          <div class="flag l" id="flag-before"></div>
-          <div class="flag r" id="flag-after"></div>
-          <div class="handle" tabindex="0" role="slider" aria-label="Before/after position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">⟷</div>
-        </div>
-        <div class="solo-flag" id="solo-flag" hidden></div>
-        <div class="legend" id="legend">
-          <div class="lg-h">Detected change</div>
-          <div class="lg"><i class="sw gain"></i>Water gain <span>land → water</span></div>
-          <div class="lg"><i class="sw loss"></i>Water loss <span>water → land</span></div>
-          <div class="lg"><i class="sw water"></i>Radar-dark both dates <span>water or smooth ground</span></div>
-          <div class="lg"><i class="sw nodata"></i>Insufficient data</div>
-        </div>
-        <div class="readout" id="readout">—</div>
+    <div id="divider" class="divider" aria-hidden="true">
+      <div class="flag l" id="flag-before"></div>
+      <div class="flag r" id="flag-after"></div>
+      <div class="handle" tabindex="0" role="slider" aria-label="Before and after comparison position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5 2 10l5 5M13 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
     </div>
+    <div class="solo-flag" id="solo-flag" hidden></div>
 
-    <div class="profile-wrap">
-      <div class="fig"><span class="figno">Plate 2</span> Along the reservoir axis, NW → SE: water gained (up) and lost (down) per sector. Click a column.</div>
-      <div id="profile" class="profile" role="group" aria-label="Per-sector change along the reservoir axis"></div>
+    <div class="legend" id="legend">
+      <div class="lg-block" id="lg-change">
+        <div class="lg-title">Detected change</div>
+        <div class="lg-row"><i class="sw loss"></i>Water loss<span>water → land</span></div>
+        <div class="lg-row"><i class="sw gain"></i>Water gain<span>land → water</span></div>
+        <div class="lg-row"><i class="sw dark"></i>Radar-dark both dates<span>water or smooth ground</span></div>
+        <div class="lg-row"><i class="sw nodata"></i>Insufficient data</div>
+      </div>
+      <div class="lg-block" id="lg-scale">
+        <div class="lg-title" id="lg-scale-title">Radar backscatter <span class="nocase">γ<sup>0</sup></span> HH</div>
+        <div class="ramp"></div>
+        <div class="ramp-labels"><span id="lg-min">−25 dB</span><span id="lg-max">0 dB</span></div>
+      </div>
     </div>
   </section>
 
-  <aside class="report" aria-label="Analysis">
-    <section class="ledger" id="stats" aria-label="Change statistics"></section>
-    <article class="card" id="analysis-card" aria-live="polite"></article>
+  <aside class="panel" aria-label="Analysis">
+    <section class="summary" id="stats" aria-label="Change statistics"></section>
+    <section class="chart-block" aria-labelledby="chart-title">
+      <div class="block-head">
+        <h2 id="chart-title">Water change by sector</h2>
+        <span class="hint">NW inflow end → SE dam</span>
+      </div>
+      <div id="profile" class="profile" role="group" aria-label="Water change per sector along the reservoir"></div>
+    </section>
+    <section class="card" id="analysis-card" aria-live="polite"></section>
   </aside>
 </main>
 
 <div class="drawer" id="method" role="dialog" aria-modal="true" aria-labelledby="method-title" hidden>
-  <div class="drawer-inner">
-    <button class="close" id="btn-close" aria-label="Close">Close ✕</button>
-    <div class="eyebrow">Appendix</div>
-    <h2 id="method-title">Methods, data &amp; limits</h2>
+  <div class="sheet">
+    <div class="sheet-head">
+      <h2 id="method-title">Method &amp; data</h2>
+      <button class="btn" id="btn-close" type="button">Close</button>
+    </div>
     <div id="method-body"></div>
   </div>
 </div>
