@@ -1,0 +1,50 @@
+{
+  "source": "Copernicus Sentinel-2 L2A (ESA), COGs via Element 84 Earth Search on AWS",
+  "source_url": "https://earth-search.aws.element84.com/v1",
+  "method": "NDWI = (B03 - B08) / (B03 + B08) > 0 on pixels the Sen2Cor SCL marks as cloud/shadow/snow-free; resampled to the 20 m analysis grid",
+  "retrieved_utc": "2026-11-14T21:42:35Z",
+  "scenes": {
+    "before": {
+      "item_id": "S2A_38TPL_20260703_0_L2A",
+      "datetime_utc": "2026-07-03T07:48:44Z",
+      "days_from_nisar": 8.25,
+      "paired_nisar": "before",
+      "scene_cloud_cover_pct": 3.3,
+      "valid_fraction_in_zone": 1.0,
+      "water_area_ha_in_zone": 54300.0,
+      "stac_url": "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a/items/S2A_38TPL_20260703_0_L2A"
+    },
+    "before_bracket": {
+      "item_id": "S2A_38TPL_20260613_0_L2A",
+      "datetime_utc": "2026-06-13T07:48:44Z",
+      "days_from_nisar": -11.75,
+      "paired_nisar": "before",
+      "scene_cloud_cover_pct": 8.0,
+      "valid_fraction_in_zone": 0.9999,
+      "water_area_ha_in_zone": 54184.0,
+      "stac_url": "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a/items/S2A_38TPL_20260613_0_L2A"
+    },
+    "after": {
+      "item_id": "S2A_38TPL_20261011_0_L2A",
+      "datetime_utc": "2026-10-11T07:48:40Z",
+      "days_from_nisar": 0.25,
+      "paired_nisar": "after",
+      "scene_cloud_cover_pct": 4.4,
+      "valid_fraction_in_zone": 0.9968,
+      "water_area_ha_in_zone": 53384.0,
+      "stac_url": "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a/items/S2A_38TPL_20261011_0_L2A"
+    }
+  },
+  "processing_notes": [
+    "S2A_38TPL_20260613_0_L2A/B03.tif: advertised offset -0.1 gave negative reflectance; DNs treated as already harmonised (offset not applied)",
+    "S2A_38TPL_20260613_0_L2A/B08.tif: advertised offset -0.1 gave negative reflectance; DNs treated as already harmonised (offset not applied)",
+    "S2A_38TPL_20260703_0_L2A/B02.tif: advertised offset -0.1 gave negative reflectance; DNs treated as already harmonised (offset not applied)",
+    "S2A_38TPL_20260703_0_L2A/B03.tif: advertised offset -0.1 gave negative reflectance; DNs treated as already harmonised (offset not applied)",
+    "S2A_38TPL_20260703_0_L2A/B04.tif: advertised offset -0.1 gave negative reflectance; DNs treated as already harmonised (offset not applied)",
+    "S2A_38TPL_20260703_0_L2A/B08.tif: advertised offset -0.1 gave negative reflectance; DNs treated as already harmonised (offset not applied)",
+    "S2A_38TPL_20261011_0_L2A/B02.tif: advertised offset -0.1 gave negative reflectance; DNs treated as already harmonised (offset not applied)",
+    "S2A_38TPL_20261011_0_L2A/B03.tif: advertised offset -0.1 gave negative reflectance; DNs treated as already harmonised (offset not applied)",
+    "S2A_38TPL_20261011_0_L2A/B04.tif: advertised offset -0.1 gave negative reflectance; DNs treated as already harmonised (offset not applied)",
+    "S2A_38TPL_20261011_0_L2A/B08.tif: advertised offset -0.1 gave negative reflectance; DNs treated as already harmonised (offset not applied)"
+  ]
+}

@@ -1,0 +1,321 @@
+{
+  "3d6b2f334d71ab6058dc43b62d2ce6dfed207793d518c0cc5f4eb1f94dfa1630": {
+    "text": "The NISAR L-band radar observations recorded a decrease in water extent at the Mingachevir Reservoir, measuring a loss of 495.2 hectares of water between June 25 and October 11, 2026. The remaining water area was approximately 62,629 hectares, and while nearly all data was valid, there was a small portion with insufficient information. \n\nThe strongest hypothesis suggests that a decline in reservoir water levels exposed the shoreline, but this claim remains supported hypothesis due to insufficient evidence. Other possible explanations include seasonal variations, hydropower-related water releases, and the emergence of vegetation on exposed margins, all deemed insufficiently supported by available data. A notable gap in evidence is the lack of water level records for the reservoir during these dates, which complicates understanding the changes observed.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:22:46Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 5
+  },
+  "622e9210c6392a60eacc4bdea3208c315bac7a57319cf010f1c6bd9928446a7e": {
+    "text": "In Sector 1 of the Mingachevir Reservoir, observations from NISAR indicate that the water extent decreased by 146.3 hectares, with no areas converting from land to water. The water area before this change was 8027.6 hectares, and after, it was 7889.2 hectares. The top hypothesis to explain this decrease is that a water-level decline exposed the shoreline. This is supported by the dominant water loss and the spatial pattern showing that much of the loss is linked to the shoreline.\n\nHowever, this hypothesis is classified as \"plausible but unconfirmed,\" primarily due to the lack of in-situ gauge measurements or satellite-altimetry water levels for the observed dates. Other hypotheses, such as seasonal water-level variation and hydropower-related water release, were considered but lack sufficient evidence, particularly operational data to clarify the causes of the observed changes. The absence of vegetation surveys and soil-moisture measurements further complicates confirming any claims about land surface changes.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:22:53Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 3
+  },
+  "294d5964fd2efc955d06ad613fba4a0c99731e6910544ebdbf53e08ec55acafa": {
+    "text": "In Sector 2, located 6-13 km from the northwest end along the reservoir axis, radar observations indicated a decrease in water extent. Specifically, 279.6 hectares of water transformed into land, leading to a final measurement of 9,856.9 hectares after the change from the initial 10,247.5 hectares. The findings are based on data from NISAR L-band, captured on two separate dates.\n\nOne possible explanation for this observed change is that a decline in reservoir water levels exposed more shoreline. However, this hypothesis is classified as \"Insufficient evidence\" due to missing data on reservoir water levels, dam operations, and vegetation characterization. The most significant missing evidence includes a lack of multi-year water-level records, in-situ gauge data, and existing vegetation surveys. Without this information, the conclusions regarding the cause of the observed changes remain uncertain.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:22:56Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 5
+  },
+  "8ad9275de7419ab7fa98dcfd103f5e773630691cc83f588d0f1c6df339e3def4": {
+    "text": "In Sector 3, radar observations from NISAR indicated a decrease in water extent of 34.3 hectares between June 25 and October 11, 2026. The area of water reduced from 9111.9 to 8916.0 hectares, with no instances of water becoming land. The strongest supporting hypothesis for this change is that a reservoir water-level decline exposed shoreline.\n\nWhile this hypothesis is supported by the observed water loss and patterns along the shoreline, several pieces of crucial evidence are missing. Notably, there were no measurements of water levels during these dates, nor were there records available for dam operations or irrigation withdrawals. Additionally, separate assessments of soil moisture or vegetation in the exposed areas were not performed, which may limit further understanding of the situation.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:23:00Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 7
+  },
+  "fd86d2eaa6c2c1e6a67bea2211e05d501341d66c22a75d2ec36a71e871675865": {
+    "text": "In Sector 4, 20.8 hectares of water were lost between June 25, 2026, and October 11, 2026, with no areas gaining water. The area of water decreased from 7,943.4 hectares to 7,771.5 hectares, indicating a clear retreat of the water edge. The NISAR observations suggest that the decreased water extent might be due to a reservoir water-level decline exposing the shoreline; however, evidence supporting this is classified as insufficient.\n\nSeveral hypotheses are considered, including seasonal water-level variation and hydropower-related water release, but both lack supportive evidence. Issues such as missing water-level records and no in-situ measurements limit understanding. The presence and effects of emergent vegetation and potential wind-roughened water were also examined but remain unconfirmed. The most critical missing evidence is the lack of operational data from the dam and multi-year records to contextualize the findings.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:23:04Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 8
+  },
+  "22929e73af843c967afdb71b1f1d96343b552c25612c53080e3b4c9c985f6e09": {
+    "text": "In Sector 5 of the Mingachevir Reservoir, no significant change in water extent was detected between June 25, 2026, and October 11, 2026. The measurements show a loss of 2.7 hectares, resulting in a water area of 6,357 hectares after the second observation. Over 99% of the sector had valid data for both dates. This level of change is below the 10-hectare significance threshold, indicating no substantial alterations.\n\nOne plausible explanation for the observations is a radiometric difference between acquisitions, which may be a data artifact rather than a true environmental change. Evidence suggests that factors like residual calibration effects could exist but would affect both dates similarly. The most important missing evidence includes in-situ reservoir water levels on both acquisition dates and records of dam outflow, hydropower releases, and irrigation withdrawals.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:23:07Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 9
+  },
+  "18a606fe9217544771718e54b08167d5fd7a81c25273841e649d39000bb7f102": {
+    "text": "In Sector 6 of the Mingachevir Reservoir, no significant change in water extent was detected between June 25, 2026, and October 11, 2026. There was a recorded loss of 1.0 hectare, with the water area measured at 5177.8 hectares before and 4968.8 hectares after the observation period. The data quality was high, with nearly all of the sector yielding valid results.\n\nA plausible explanation for this lack of significant change could stem from radiometric differences between the two observations, potentially representing a data artifact rather than an actual environmental change. However, this hypothesis is not strongly supported due to a median difference of only +0.9 dB in unchanged land and the similar processing of both data sets. Important missing evidence includes measurements of reservoir water levels on both dates and records of dam outflow or irrigation withdrawals, which would help clarify any changes.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:23:10Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 9
+  },
+  "76b83b25eafa11621160076a08525bf8b06403706a1ae90b835032fbd8b2fe8e": {
+    "text": "In Sector 7 of the Mingachevir Reservoir, no significant change in water extent was detected between the two NISAR L-band radar observations on June 25 and October 11, 2026. The data shows no gain or loss in water extent, with water levels recorded as 5710.2 hectares before and 5518.3 hectares after both observations. This change is below the significance threshold of 10 hectares, indicating no substantial alterations.\n\nOne possible explanation for the lack of detected change is the potential for a radiometric difference between the two acquisition dates, which could be a data artifact rather than an environmental change. The median HH difference over unchanged land was +1.0 dB, with a change detection threshold of 3 dB required. Important missing evidence includes in-situ water level measurements, records of dam outflows, and multi-year time series data for better context.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:23:14Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 9
+  },
+  "01d90523458306f1f12a07edc2fdc34f3fddc02fb0bcddbce08b472f73044b50": {
+    "text": "In Sector 8, no significant change in water extent was detected between the two radar observation dates, with a recorded loss of 3.2 hectares and no gain. The total water area measured was approximately 5,986.5 hectares before the observations and 5,859.2 hectares after. Both observation dates had valid data, indicating a reliable assessment.\n\nThe hypothesis about a radiometric difference between acquisitions suggests a possible data artefact rather than an environmental change. This is supported by the observed neutral median modelled HH difference of +1.0 dB over unchanged land, which is below the threshold for detecting significant change. The most important missing evidence includes in-situ water levels during the observations and records of dam outflow or irrigation withdrawals that could clarify the conditions affecting the reservoir.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:23:18Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 5
+  },
+  "ac533ccc4cbed0d17dc6867cb419e1d3b881618f206c1da96045cafe5a8c0e3b": {
+    "text": "In Sector 9 of the Mingachevir Reservoir, no significant change in water extent was detected between June 25 and October 11, 2026. There was a total loss of 2.8 hectares, with water levels measuring 3,926.2 hectares initially and 3,723.4 hectares afterwards. All data was valid, and the observed change is below the 10-hectare significance threshold, leading to the conclusion of \"no significant change detected.\"\n\nOne potential explanation for the findings is a radiometric difference between the two data acquisitions, which may be a data artefact rather than reflecting actual environmental changes. Key evidence missing includes in-situ water level measurements on both dates and records of dam outflow or irrigation withdrawals. Additionally, a multi-year NISAR time series is needed to understand seasonal variations, and field validation of the detected shoreline would provide further clarity.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:23:22Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 8
+  },
+  "365c9e3a22e504146accd56ad5a21db94818ba8c8ed48b1a41230eec2885873f": {
+    "text": "In the SE end of the Mingachevir Reservoir, NISAR L-band observations indicated no significant change in water extent between June 25 and October 11, 2026. The analysis found a loss of 4.5 hectares, while the total water extent decreased from 2103.3 hectares to 1768.9 hectares. The detection change is below the threshold of significance, leading to the conclusion that there is no significant change to explain.\n\nOne possible explanation for the observations is a radiometric difference between the data acquisitions, considered a data artefact rather than an environmental factor. Evidence includes a neutral median HH difference of +1.3 dB over unchanged land and the note that both scenes are provisional products, which might have residual calibration effects. Important missing evidence includes in-situ reservoir water level records, dam outflow details, multi-year NISAR time series, and field validation of the shoreline.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:23:25Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 7
+  },
+  "4b46623b4a08ae45051b78d4829b98c33ce0ce8686456f73af04d17d1586a3d6": {
+    "text": "Observations from the NISAR L-band radar show a significant decrease in water extent, with 495.2 hectares of water turning into land, and no areas transitioned from land to water. This change indicates that the water's edge has retreated noticeably. The evidence suggests a potential explanation that a decline in the reservoir's water level exposed the shoreline, but this is classified as an \"Insufficient evidence\" status because the specific causes behind this water level change are not identified.\n\nKey missing evidence includes the absence of in-situ or satellite-altimetry water level data for the relevant dates, which hinders correlation with observed changes. The lack of operational data from the dam, including water releases and withdrawals, also contributes to the uncertainties. Therefore, while there are indicators supporting the hypothesis of a water-level decline, robust conclusions cannot be drawn without further data. Required conclusion label: \"Insufficient evidence.\"",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:25:31Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 1,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "94821ce8721786ad7b4d8ad239f690946e042eec8d7c8cf615176bb14b5f2aaf": {
+    "text": "In Sector 1 at the northwest end of the Mingachevir Reservoir, observations from the NISAR L-band radar indicate that 146.3 hectares of water became land between June 25, 2026, and October 11, 2026, with no water gaining back into the reservoir during this period. Evidence supports the idea that a decline in water level exposed the shoreline, as there was a significant loss of water. However, the exact reasons for this change remain unclear.\n\nThe strongest hypothesis suggests that the reservoir's water-level decline exposed the shoreline and is labeled as \"Plausible but unconfirmed.\" Missing evidence includes the lack of available gauge data to confirm water levels during this time and no records of dam operations or irrigation withdrawals, which could help clarify the situation. Most importantly, seasonal patterns cannot be established from just two observations, highlighting the need for further data.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:25:34Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 5,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "164417d8a705651cbf68f97526f0cf723b106f99cd1dcef0448aca227737324c": {
+    "text": "In Sector 2 of the Mingachevir Reservoir, radar observations indicate a significant decrease in water extent, with 279.6 hectares of water becoming land and no areas gaining water. This change, observed through NISAR L-band radar, is validated as a significant event, but the explanation behind this water loss remains unclear. The strongest hypothesis suggests that a decline in the reservoir's water level has exposed the shoreline. However, this hypothesis is classified as \"Insufficient evidence\" since it does not clarify the reasons behind the water-level changes, such as operational decisions or inflows.\n\nMissing evidence includes critical data on actual water levels, dam operations, and vegetation assessments, making it difficult to ascertain the causes of the change. Other hypotheses, like seasonal variation and hydropower-related water release, are similarly categorized as \"Insufficient evidence\" due to the lack of comprehensive historical data or operational insights. The verdict on the strongest hypothesis is \"Insufficient evidence.\"",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:25:38Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 1,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "7f04c31329c72222ff845f3dbbc2aca7b440083618dd8cb47ab11b8e4d424ee6": {
+    "text": "In Sector 3 of the Mingachevir Reservoir, NISAR L-band radar observations show a significant change, with 34.3 hectares of water converting to land between June 25 and October 11, 2026, and no water gain recorded. This change indicates that the water edge retreated, supporting the hypothesis that a reservoir water-level decline exposed the shoreline. Evidence such as loss patches being primarily attached to dry land and consistent patterns across multiple sectors strengthens this conclusion.\n\nHowever, several pieces of crucial evidence are missing. Specifically, there are no dam operations records, in-situ gauge data, or satellite altimetry records to validate water levels during this period. Also lacking are multi-year records to assess typical seasonal variations or detailed vegetation data for the exposed margins. Therefore, the strongest hypothesis is labeled as \"Supported hypothesis.\"",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:25:42Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 5,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "752e5297912f54930daac9aac6bbd4aea6ebd11a62b7e7842822585a1fe34838": {
+    "text": "In Sector 4, between June 25 and October 11, 2026, the NISAR L-band radar observed a decrease in water extent, with 20.8 hectares of water becoming land and no areas converting from land to water. The data indicates significant change, suggesting a retreat of the water edge. The strongest hypothesis states that this observed decline in reservoir water level exposed the shoreline, but remains classified as \"Insufficient evidence\" due to various missing data points.\n\nThe most important missing evidence includes the lack of in-situ gauge or satellite-altimetry water level data for the relevant dates. Additionally, operational data from the dam regarding water releases, irrigation withdrawals, and vegetation assessments are also unavailable. This absence of critical information limits confirming or refuting any specific cause for the observed changes, and supports the conclusion \"Insufficient evidence.\"",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:25:48Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 5,
+    "semantic_checks_passed": true,
+    "attempts": 2
+  },
+  "73f8ac0cb20635bd7431aa8acde9bb71e84dbea3f6d31cfaa67b0d71829c4904": {
+    "text": "In Sector 5, located 26-32 km from the northwest end of the Mingachevir Reservoir, no significant change in water extent was detected between the dates of June 25 and October 11, 2026. A loss of 2.7 hectares of water was observed, while no land gained water. The data collected is consistent across both dates, with 100% valid data for the area.\n\nA potential explanation for this observation is the possibility of a radiometric difference between acquisitions, which is classified as a data artifact rather than an environmental driver. The median HH difference over unchanged land was +0.9 dB, contradicting the required change detection threshold. The most critical missing evidence includes in-situ reservoir water level data and multi-year observations for better context on seasonal variations. The verdict on the strongest hypothesis is \"No significant change detected.\"",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:25:52Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 9,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "03edccabce2f539d4618405c605445b86502db872ab205d0ff0f22e0ea6da8da": {
+    "text": "In Sector 6 of the Mingachevir Reservoir, NISAR L-band radar observations indicated a negligible change in water extent between June 25, 2026, and October 11, 2026, with 1.0 hectare of water loss and no gain. Data from the sensor showed that 100% of the sector had valid measurements, confirming that the observed shift was not significant.\n\nOne possible explanation for the findings could be a radiometric difference between the two acquisitions, which may represent a data artifact rather than an environmental change. This is supported by a median HH difference over unchanged land, which was only +0.9 dB, below the detection threshold of 3 dB. However, several key pieces of evidence are missing, including in-situ reservoir water level measurements and records of outflow or withdrawals. The required conclusion label for the strongest hypothesis is \"No significant change detected.\"",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:25:55Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 9,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "0410a02371ea5afff92f7da2b79f07525be6b59e7e6180348cf262c4d32dd686": {
+    "text": "In Sector 7, spanning 39-45 km from the northwest end along the reservoir, observations using NISAR L-band radar on two dates revealed no significant change in water extent, with both water loss and gain measured at 0.0 hectares. The results indicate that 100% of the data was valid for both observation dates, confirming a stable condition during the measuring period.\n\nThe absence of any significant change may be attributed to a radiometric difference between acquisitions, viewed as a data artefact rather than an environmental factor. This inference is based on a median HH difference of +1.0 dB over unchanged land, while change detection requires at least 3 dB. However, crucial missing evidence includes in-situ reservoir water level data from both dates, outflow and irrigation withdrawal records, and long-term water-level observations. The verdict on the strongest hypothesis is \"No significant change detected.\"",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:25:58Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 7,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "75913c2d18daf5051f55c79f494bd8dc7274238b42db2374a420efed61397fac": {
+    "text": "In Sector 8 of the Mingachevir Reservoir, measurements from the NISAR L-band radar on June 25 and October 11, 2026, indicate no significant change in water extent, with a loss of 3.2 hectares of water and no recorded gain. The data quality is validated as there was 100% validity for both dates.\n\nPossible explanations for the observed changes include a radiometric difference between the radar acquisitions, considered more of a data artefact than a reflection of environmental changes. Notable is that the median HH difference over stable land was +1.0 dB, and a detection threshold of 3 dB is needed for significant claims. Critical missing evidence includes in-situ water level measurements, records of dam outflow and irrigation withdrawal, multi-year data comparisons, and field validation of the shoreline. The verdict for the strongest hypothesis is \"No significant change detected.\"",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:26:01Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 8,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "63f977d99b156cc1508aa509e537b3f217a112bf7949895d522d82cbf7b472d5": {
+    "text": "In Sector 9, located 52-58 km from the NW end along the reservoir axis, the observations using NISAR L-band radar on June 25 and October 11, 2026, revealed no significant change in water extent. The area experienced a water loss of 2.8 hectares, but no water gain was detected, indicating a net change of -2.8 hectares, with 100% of the sector having valid data on both dates.\n\nThe strongest hypothesis is currently undefined, though a potential explanation for the observed loss could be a radiometric difference between acquisitions, which may stem from data artifacts rather than environmental changes. This is supported by a median HH difference of +1.1 dB over unchanged land, suggesting that significant change detection requires greater thresholds. The most important missing evidence includes the in-situ reservoir water level on both acquisition dates and records of dam outflow and irrigation withdrawals. The required conclusion label is \"No significant change detected.\"",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:26:05Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 10,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "e85d360f1e6f8018aa7f661260d9ae338187f7fe88a6a97de6753535a28be8c3": {
+    "text": "In Sector 10 at the southeast end of the Mingachevir Reservoir, NISAR L-band radar observations show no significant change in water extent between June 25, 2026, and October 11, 2026. Specifically, there was a water loss of 4.5 hectares, with no recorded gain. The data from both dates had valid measurements across the entire sector, reinforcing the conclusion that no significant change was detected.\n\nOne possible explanation for the results could be a radiometric difference between the two acquisitions, indicating a data quality issue rather than an environmental shift. This hypothesis is marked as null, meaning it lacks thorough investigation. The most important missing evidence includes in-situ water level measurements and detailed records of dam outflows and irrigation withdrawals. The required conclusion label is \"No significant change detected.\"",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:26:08Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 6,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "50da6a451fd6f0f639c6ab0a6a5cdb81856bf48a9ea79936481a4dd5e32ae194": {
+    "text": "The observations from the NISAR L-band radar show a significant decrease in water extent, with 495.2 hectares of water becoming land. There were no measured gains in water area during this period. A possible explanation for this decrease is that a decline in reservoir water levels has exposed new shoreline. However, there is insufficient evidence to strongly support this idea, as the available data is too weak or conflicting to rank it higher.\n\nMissing evidence includes data on reservoir water levels, which is crucial for making definitive comparisons. Other limitations are the absence of records for potential water withdrawals, evapotranspiration, and vegetation on newly exposed areas. As a result, the current findings currently suggest insufficient evidence regarding the situation.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:27:16Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 1,
+    "semantic_checks_passed": true,
+    "attempts": 2
+  },
+  "336c19616b9e4d194bef03be54dbecf4cfb2734f4848ca598cff684e5ce610aa": {
+    "text": "In the specified area, radar observations indicated a decrease in water extent, with 279.6 hectares of water transforming into land, while no land became water. This significant change suggests the shoreline retreated. The strongest hypothesis is a reservoir water-level decline exposing the shoreline, but the evidence does not support a definitive conclusion. Available evidence is considered weak or conflicting; supporting lines suggest a general trend, yet conflicting optical data highlights inconsistencies. Additionally, some crucial data, such as operational records from the dam or multi-year water-level data, is missing.\n\nThe conclusion drawn is \"Insufficient evidence\" because the available evidence is too weak or conflicting to rank the hypothesis higher. The key missing evidence includes operational data from the dam and more comprehensive historical water-level records. This lack of data limits the ability to pinpoint the exact cause of the observed water loss.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:27:27Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 1,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "96fa7361d1ae59229a34edc51277a868d6bbcb66b45222d3d0c4bc6ac3f7ab4f": {
+    "text": "In Sector 3, a decrease in water extent was observed, with approximately 34.3 hectares of water becoming land and no water gaining. This change is significant and suggests that a decline in the reservoir's water level exposed the shoreline. The evidence supporting this hypothesis includes a consistent radar pattern and corroboration from an independent optical sensor.\n\nHowever, certain evidence is missing that could provide further insights, such as the operational data from the dam, in-situ gauge measurements, and multi-year records. The conclusion is \"Supported hypothesis\" because the observed changes align with the radar and optical data without contradicting evidence. However, the exact reasons behind the water-level decline are not clearly defined.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:27:30Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 2,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "ffa373c96e2e99bacb9b78694be4a29dc2c50fde48a2099842a7b4bf860da115": {
+    "text": "In Sector 4, a decrease in water extent was observed, with 20.8 hectares of water becoming land, while no land transitioned to water. This change is classified as significant. The leading hypothesis suggests that a decline in reservoir water levels exposed the shoreline, but the evidence supporting this is insufficient due to conflicting data and several missing pieces of information. The water loss aligns with patterns seen across multiple sectors; however, there are also contradictions from optical data that show stability in water levels before and after the radar observations.\n\nThe conclusion reached is that there is insufficient evidence to determine the cause of the observed change. Missing evidence includes a lack of specific operational data related to water management, along with data on vegetation and water levels at the reservoir. These gaps hinder a definitive understanding of the situation.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:27:34Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 2,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "78dc19a8b3ee3d79e51d87afb2f0abf1c21d20731cdb35f7044faaffd6bf579a": {
+    "text": "In Sector 5 of the Mingachevir Reservoir, no significant change in water extent was detected between June 25 and October 11, 2026. The observations showed a loss of 2.7 hectares of water, while no land gained water. This resulted in a net change of -2.7 hectares. The data from both dates was entirely valid, and the total gain and loss was below the significance threshold of 10 hectares.\n\nGiven the absence of significant change, no environmental explanations are evaluated. The conclusion is that \"No significant change detected,\" as the variations observed do not meet the threshold for further investigation. The most important missing evidence includes in-situ reservoir water levels on the acquisition dates and records of dam outflows or irrigation withdrawals.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:27:36Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 7,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "aafaaea49ae8292b49d3965aab160fa2a55d897ad51d37ae6de2e736a62c2b91": {
+    "text": "In Sector 6, radar observations showed no significant water-extent change. The measurements indicated a loss of 1.0 hectare of water, with no gain reported. Data quality checks confirmed no issues, supporting the conclusion that changes were minimal, as the combined gain and loss did not exceed the significance threshold.\n\nThere is nothing to explain for this stability. The strongest hypothesis is not present, and the most important missing evidence includes in-situ water level measurements on both acquisition dates and records of dam outflows, hydropower releases, and irrigation withdrawals. A multi-year NISAR time series and field assessments of the shoreline are also needed to evaluate seasonal patterns or anomalies. No significant change detected, as the gain plus loss is below the required significance threshold.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:27:42Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 2,
+    "semantic_checks_passed": true,
+    "attempts": 2
+  },
+  "ca8e37b95d1cf2cea661661c177be78c63caedf3e776fd9fc3d074c72dd97184": {
+    "text": "In Sector 7, radar observations indicate that there was no significant change detected in water extent, as both water gain and loss were recorded at 0.0 hectares. The data showed valid measurements for the entire area. This consistency is highlighted by the data quality check, which found no issues, leading to the conclusion that there is no environmental explanation to evaluate.\n\nConclusively, there is nothing to explain regarding changes in this sector. However, important evidence is missing, including in-situ measurements of reservoir water levels on the acquisition dates, records of dam outflow or irrigation withdrawals, a multi-year water-level time series, and field validation of the shoreline detected.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:27:49Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 2,
+    "semantic_checks_passed": true,
+    "attempts": 2
+  },
+  "2024c6629215b64ca206928d970fea03c53bf27cfaed91b1199bd81dfdcf22a7": {
+    "text": "In Sector 8 of the Mingachevir Reservoir, no significant water extent change was detected between the two observations. Specifically, there was a water loss of 3.2 hectares, while no water gain occurred. The data quality check confirmed the validity of the measurements on both dates, indicating that the lack of significant change is due to the measured gain and loss being below the significance threshold.\n\nTherefore, the conclusion is that no significant change detected. This is supported by the observation that the gain and loss totals 3.2 hectares, which does not meet the threshold of 10 hectares. The most important missing evidence includes in-situ reservoir water level readings and records of dam outflow or irrigation withdrawals.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:27:52Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 4,
+    "semantic_checks_passed": true,
+    "attempts": 1
+  },
+  "0a4da77434ea73aac9ff28e5f73a8bcc23dcf4b65f61a57f147be8d38ea50491": {
+    "text": "No significant change detected in the sector observed. The data show a water loss of 4.5 hectares, with no water gain measured. The overall gain and loss of 4.5 hectares is below the significance threshold of 10 hectares. The data quality was confirmed with no identified issues, meaning no environmental explanation has been evaluated.\n\nThe strongest hypothesis for any changes is absent, and there are several key pieces of missing evidence. These include in-situ reservoir water level measurements on both acquisition dates, records for dam outflow and hydropower release, multi-year NISAR or water-level time series, and field validation of the detected shoreline.",
+    "source": "openai",
+    "model": "gpt-4o-mini",
+    "generated_utc": "2026-11-14T22:28:03Z",
+    "numbers_verified": true,
+    "unverified_numbers": [],
+    "numbers_checked": 3,
+    "semantic_checks_passed": true,
+    "attempts": 2
+  }
+}

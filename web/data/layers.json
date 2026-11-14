@@ -1,0 +1,109 @@
+{
+  "s2_before": {
+    "url": "data/img/s2_before.webp",
+    "bounds": [
+      [
+        40.762654,
+        46.468905
+      ],
+      [
+        41.077956,
+        47.206904
+      ]
+    ]
+  },
+  "s2_after": {
+    "url": "data/img/s2_after.webp",
+    "bounds": [
+      [
+        40.762654,
+        46.468905
+      ],
+      [
+        41.077956,
+        47.206904
+      ]
+    ]
+  },
+  "nisar_before_HH": {
+    "url": "data/img/nisar_before_HH.webp",
+    "bounds": [
+      [
+        40.762654,
+        46.468905
+      ],
+      [
+        41.077956,
+        47.206904
+      ]
+    ],
+    "vmin_db": -25,
+    "vmax_db": 0,
+    "date": "2026-06-25",
+    "pol": "HH"
+  },
+  "nisar_before_HV": {
+    "url": "data/img/nisar_before_HV.webp",
+    "bounds": [
+      [
+        40.762654,
+        46.468905
+      ],
+      [
+        41.077956,
+        47.206904
+      ]
+    ],
+    "vmin_db": -32,
+    "vmax_db": -8,
+    "date": "2026-06-25",
+    "pol": "HV"
+  },
+  "nisar_after_HH": {
+    "url": "data/img/nisar_after_HH.webp",
+    "bounds": [
+      [
+        40.762654,
+        46.468905
+      ],
+      [
+        41.077956,
+        47.206904
+      ]
+    ],
+    "vmin_db": -25,
+    "vmax_db": 0,
+    "date": "2026-10-11",
+    "pol": "HH"
+  },
+  "nisar_after_HV": {
+    "url": "data/img/nisar_after_HV.webp",
+    "bounds": [
+      [
+        40.762654,
+        46.468905
+      ],
+      [
+        41.077956,
+        47.206904
+      ]
+    ],
+    "vmin_db": -32,
+    "vmax_db": -8,
+    "date": "2026-10-11",
+    "pol": "HV"
+  },
+  "change_map": {
+    "url": "data/img/change_map.png",
+    "bounds": [
+      [
+        40.762654,
+        46.468905
+      ],
+      [
+        41.077956,
+        47.206904
+      ]
+    ]
+  }
+}
