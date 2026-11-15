@@ -30,4 +30,6 @@ if __name__ == "__main__":
         if int(name[:2]) < start:
             continue
         runpy.run_path(str(HERE / name), run_name="__main__")
+    from validate_web import validate
+    validate()
     print("\nDone. Serve the web app with:  python -m http.server -d web 8000")

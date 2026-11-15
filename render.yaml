@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: sar-bridge-ai
+    runtime: static
+    branch: main
+    buildCommand: node scripts/validate-static.mjs
+    staticPublishPath: ./web
+    autoDeployTrigger: commit
+    envVars:
+      - key: SKIP_INSTALL_DEPS
+        value: "true"
+    headers:
+      - path: /data/*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate

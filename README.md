@@ -53,6 +53,33 @@ Rule-path tests for the evidence engine: `python pipeline/test_evidence.py`.
 
 ## Run it
 
+The checked-in observation package is ready to explore without credentials or a new pipeline run:
+
+```powershell
+.venv/Scripts/python -m http.server --bind 127.0.0.1 --directory web 8000
+```
+
+Open **http://127.0.0.1:8000**. The guided introduction starts with the measured water change and a real Sentinel-2 context image. **Explore the change** opens a presenter-paced investigation: **Observe → Compare → Explain**. The radar divider briefly demonstrates the comparison, the next step reveals the detected change, and the final step focuses on Sector 03 and its source-linked evidence chain. Arrow keys move between steps when an interactive control is not focused. **Present** toggles fullscreen where supported; reduced-motion preferences disable the automatic divider reveal and animated map travel.
+
+**Workspace** skips the guide. It is also available directly at **http://127.0.0.1:8000/?view=workspace**; sector deep links continue to open the full workspace. Select **NISAR HH** to compare the radar observations themselves. The date strip always follows the visible sensor. The coloured change overlay, overview measurements and sector reports always come from the NISAR observation pair. Opening a sector manually during the guide switches to the full workspace so its controls and report match the map selection.
+
+Select a sector through the map labels, chart or analysis-area selector. The map selection, chart highlight, evidence verdict and shareable `#sector-3` URL stay in sync. **Export report** downloads the selected area's Markdown report with measured values, ranked hypotheses, evidence sources, missing observations, original granule identifiers and limitations. **Method & data** contains the processing and provenance details.
+
+### Frontend / processing contract
+
+The processing backend is an offline Python pipeline, and the frontend is a buildless static application. There is no live API or browser-side model request. Python writes `web/data/`; `web/js/data.js` loads and checks that package before the workspace starts. `web/js/app.js` controls the map and evidence inspector, and `web/js/report.js` exports the current report. Credentials stay in the Python environment.
+
+The loader checks observation dates, sector IDs, overview/sector totals and map-tooltip measurements. Missing required files or inconsistent exports produce a retryable error with no substitute measurements. Optional change-polygon and reservoir-outline failures leave the remaining workspace usable. Leaflet 1.9.4 is vendored under `web/vendor/leaflet/` with its licence; satellite basemap tiles and the preferred web fonts require internet access. The local observation rasters do not require an external imagery service.
+
+Validate the data package without network requests or model calls:
+
+```powershell
+.venv/Scripts/python pipeline/validate_web.py
+.venv/Scripts/python pipeline/test_evidence.py
+```
+
+`run_all.py` also validates the complete export package after processing. Refresh the browser after regenerating the exports. To regenerate observations and explanations, use the full pipeline workflow below:
+
 ```bash
 python -m venv .venv
 .venv/Scripts/pip install -r requirements.txt        # Windows (use .venv/bin/pip on macOS/Linux)
@@ -69,6 +96,26 @@ pipeline/   00 study area · 01 NISAR metadata (CMR) · 02 NISAR subset streamin
 web/        static site (Leaflet), deployed by .github/workflows/pages.yml; data/ is generated
 data/context/  small provenance + supplemental datasets (committed); data/interim/ rasters (ignored)
 ```
+
+## Deploy to Render
+
+[Deploy to Render](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FFidannn123%2Fsar-bridge-ai)
+
+The root `render.yaml` defines a **Static Site** that publishes only `web/`. Its build command, `node scripts/validate-static.mjs`, checks the observation package, published asset paths and client JavaScript syntax without installing Python/geospatial dependencies, downloading observations or calling a language model. A failed package check prevents deployment.
+
+Connect this repository in Render as a Blueprint, or use these settings for a manually created Static Site:
+
+| Setting | Value |
+|---|---|
+| Branch | `main` |
+| Root Directory | Leave empty (repository root) |
+| Build Command | `node scripts/validate-static.mjs` |
+| Publish Directory | `web` |
+| Environment Variable | `SKIP_INSTALL_DEPS=true` |
+
+No Earthdata or OpenAI credentials are required on Render for this version. The checked-in derived observations and reports are served as static files. To update observations, run the Python pipeline locally and commit the regenerated `web/data/` package. Commits to the linked branch automatically trigger a new deployment. The `/data/*` response header requests browser revalidation so observation files do not remain stale across releases.
+
+Validate the same deploy gate locally with `node scripts/validate-static.mjs`. The existing GitHub Pages workflow remains available independently.
 
 ## Limitations
 
