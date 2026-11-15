@@ -1,6 +1,6 @@
 # SAR-BRIDGE — 2026 hackathon strategiyası
 
-Status: müzakirə üçün təklif. Bu sənəd canlı tətbiqdə yeni funksiyaların artıq hazır olduğunu bildirmir.
+Status: tətbiqin hazır funksiyaları və növbəti elmi yoxlamalar üçün komanda brifi. İnsan baxışı lokal nümayiş kimi işləyir; çoxistifadəçili ekspert təsdiqi xidməti deyil.
 
 Challenge: **2026 NASA Space Apps — Dancing with the SARs**. Uyğunluq istifadəçinin təqdim etdiyi tam challenge mətninə əsaslanır. Yerləşdirmə: https://sar-bridge-ai.onrender.com/
 
@@ -20,7 +20,8 @@ SAR-BRIDGE NISAR radar müşahidələrində su ilə örtülmüş sahənin harada
 | Əlavə məlumatla kontekst | Sentinel-2, ERA5/ERA5-Land, OSM su anbarı konturu və bənd nöqtəsi | Hazır |
 | Fiziki səbəblər barədə hipotez | Qayda əsaslı sübut mühərriki və məhdudlaşdırılmış LLM izahı | Hazır; səbəbin sübutu deyil |
 | İnsan üçün faydalı nəticə | Mənbəli sektor hesabatı və çatışmayan sübutlar | Hazır |
-| İnsan yoxlamasının görünməsi | Yoxlama növbəsi, rəy, qəbul/rədd, əlavə sübut istəyi | Əlavə edilməli |
+| İnsan yoxlamasının görünməsi | Yoxlama növbəsi, əsaslandırılmış rəy, izahın mübahisələndirilməsi və əlavə sübut istəyi | Hazır; brauzerdə lokal saxlanır, kimlik təsdiqlənmir |
+| Dəyişiklik müqayisəsi | Optik istinada qarşı sinif üzrə saylar, precision/recall/F1/IoU və məhdudiyyətlər | Hazır; sahə həqiqəti ilə validasiya deyil |
 | İnfrastrukturla əlaqə | Dəyişmiş sahə ilə yol/obyekt yaxınlığının mənbəli göstərilməsi | Hələ hazır deyil |
 
 Proqnoz, Sentinel-1 və deformasiya bu challenge-in məcburi komponentləri deyil. Pilot üçün tək bir maraqlı ərazi seçmək təqdim edilmiş tapşırığa uyğundur.
@@ -54,7 +55,7 @@ Hazır HH dəyişiklik qaydası: su/quru sinfi dəyişir, HH siqnalı ən azı 3
 3. LLM həmin strukturlaşdırılmış nəticəni anlaşılan dilə çevirir; peyk şəklindən özü hektar və deformasiya ölçmür.
 4. İnsan nəticəni yoxlayır, izahı mübahisələndirir və ya əlavə sübut istəyir. İnterfeysdə bu addım artıq var: baxan şəxsin adı, vaxt, məlumat versiyası, rəy, əsaslandırma, sübut istinadı və növbəti addım brauzerdə saxlanır, JSON və hesabat kimi çıxarılır. Bu, lokal nümayişdir; istifadəçi kimliyi təsdiqlənmir və çoxistifadəçili server xidməti deyil.
 
-Prioritet əlavə funksiyanın axını:
+Hazır insan baxışı funksiyasının axını:
 
 `Hesablanmış nəticə → ekspert baxışını gözləyir → rəy və sübut → baxış tamamlandı / əlavə məlumat tələb olunur → insan qərarı`
 
