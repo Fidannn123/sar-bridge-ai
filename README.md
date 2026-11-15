@@ -76,6 +76,8 @@ This is explicitly a **local browser demo**: names and evidence references are s
 
 ### Frontend / processing contract
 
+The Mission / paper design uses a dark entry panel beside the real interactive optical map, an open observation-provenance band and the three-step investigation rail. Analysis stays on white surfaces with amber actions and terracotta/slate change classes. Possible explanations open on demand; the workspace's human-review actions remain in a fixed footer while the evidence inspector scrolls. The layout adapts from a desktop split to a mobile stack, and reduced-motion preferences disable the panel entrance and automatic divider reveal. See `docs/design-direction.md` for the visual system.
+
 The processing backend is an offline Python pipeline, and the frontend is a buildless static application. There is no live API or browser-side model request. Python writes `web/data/`; `web/js/data.js` loads and checks that package before the workspace starts. `web/js/app.js` controls the map and evidence inspector, and `web/js/report.js` exports the current report. Credentials stay in the Python environment.
 
 The loader checks observation dates, sector IDs, overview/sector totals and map-tooltip measurements. Missing required files or inconsistent exports produce a retryable error with no substitute measurements. Optional change-polygon and reservoir-outline failures leave the remaining workspace usable. Leaflet 1.9.4 is vendored under `web/vendor/leaflet/` with its licence; satellite basemap tiles and the preferred web fonts require internet access. The local observation rasters do not require an external imagery service.

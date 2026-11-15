@@ -488,7 +488,7 @@ function renderSummary() {
     <div class="stat loss">${icon("m3 5 5 5 4-3 5 8m-6 0h6V9")}<div class="k">Radar-indicated loss</div><div class="v">${num(t.loss_ha, 1)}<small>ha</small></div><div class="s">Radar-detected water → land</div></div>
     <div class="stat gain">${icon("m3 15 6-6 3 3 5-8m-6 0h6v6")}<div class="k">Radar-indicated gain</div><div class="v">${num(t.gain_ha, 1)}<small>ha</small></div><div class="s">Radar-detected land → water</div></div>
     <div class="stat">${icon("m4 10 4 4 8-9")}<div class="k">Valid radar coverage</div><div class="v">${num(100 * t.valid_fraction, 2)}<small>%</small></div><div class="s">${ha(t.insufficient_data_ha)} with insufficient data</div></div>
-    <div class="stat">${icon("m3 7 7-4 7 4-7 4-7-4Zm0 4 7 4 7-4M3 15l7 4 7-4")}<div class="k">Water-mask agreement</div><div class="v">${Number.isFinite(agreement) ? `${num(100 * agreement, 1)}<small>%</small>` : "n/a"}</div><div class="s">${Number.isFinite(agreement) ? `Same-day water mask · ${nice(st.pair.after.date)}` : "Independent optical comparison unavailable"}</div></div>`;
+    <div class="stat">${icon("m3 7 7-4 7 4-7 4-7-4Zm0 4 7 4 7-4M3 15l7 4 7-4")}<div class="k">Water-mask agreement</div><div class="v">${Number.isFinite(agreement) ? `${num(100 * agreement, 1)}<small>%</small>` : "n/a"}</div><div class="s">${Number.isFinite(agreement) ? `Not change accuracy. Same-day mask · ${nice(st.pair.after.date)}` : "Independent optical comparison unavailable"}</div></div>`;
   $("#stats").setAttribute("aria-busy", "false");
 }
 
@@ -737,26 +737,28 @@ function renderCard(unit, id) {
   const dominantLoss = dc.loss_ha >= dc.gain_ha;
   el.innerHTML = `
     <div class="card-head"><div><h3>${esc(isTotal ? "Whole reservoir" : unit.name)}</h3><p class="card-sub">${esc(isTotal ? `${D.stats.n_sectors} sectors combined · NISAR HH` : unit.position || "Selected map sector · NISAR HH")}</p></div>${isTotal ? "" : '<button class="link-btn" id="btn-back" type="button">All sectors</button>'}</div>
-    <div class="measurement"><div class="measurement-label">Measured change · ${nice(dc.dates[0])} → ${nice(dc.dates[1])}</div><div class="measurement-value ${!unit.significant_change ? "stable" : dominantLoss ? "" : "gain"}">${unit.significant_change ? `${num(dominantLoss ? dc.loss_ha : dc.gain_ha, 1)} ha water ${dominantLoss ? "loss" : "gain"}` : "No significant change"}</div><div class="measurement-detail"><span>Loss ${ha(dc.loss_ha)} · Gain ${ha(dc.gain_ha)}</span><span>${pct(dc.valid_fraction)} valid</span></div></div>
+    <div class="measurement"><div class="measurement-label">Radar-indicated change · ${nice(dc.dates[0])} → ${nice(dc.dates[1])}</div><div class="measurement-value ${!unit.significant_change ? "stable" : dominantLoss ? "" : "gain"}">${unit.significant_change ? `${num(dominantLoss ? dc.loss_ha : dc.gain_ha, 1)} ha water ${dominantLoss ? "loss" : "gain"}` : "No significant change"}</div><div class="measurement-detail"><span>Loss ${ha(dc.loss_ha)} · Gain ${ha(dc.gain_ha)}</span><span>${pct(dc.valid_fraction)} valid</span></div></div>
     <div class="verdict"><div class="verdict-top"><span class="chip ${esc(c.status)}">${esc(c.label)}</span></div><p class="why">${esc(preview || c.reason)}</p></div>
     ${
       hyps.length
-        ? `<section class="sec"><h3>Possible explanations <span class="heading-note">Ranked by evidence</span></h3>${hyps.slice(0, 3).map(hypothesisHTML).join("")}${
+        ? `<details class="report-details possible-explanations"><summary>Possible explanations <span class="ledger-count">Ranked by evidence</span></summary><div class="detail-body">${hyps.slice(0, 3).map(hypothesisHTML).join("")}${
             hyps.length > 3
               ? `<details class="report-details more-hypotheses"><summary>${hyps.length - 3} other explanations</summary><div class="detail-body">${hyps
                   .slice(3)
                   .map((h, i) => hypothesisHTML(h, i + 3))
                   .join("")}</div></details>`
               : ""
-          }</section>`
+          }</div></details>`
         : ""
     }
     <details class="report-details"><summary>Evidence ledger <span class="ledger-count">${counts.supports} support · ${counts.contradicts} conflict</span></summary><div class="detail-body"><p class="fine" style="margin-top:0;margin-bottom:12px">${hyps[0] ? `Evidence for the leading hypothesis: ${esc(hyps[0].title)}.` : "Available observations for this area."} Supporting observations alone do not establish a cause.</p>${ledger.length ? evList(ledger) : '<p class="fine">No hypothesis-specific evidence is available for this area.</p>'}${c.reason ? `<p class="fine">Engine verdict: ${esc(c.reason)}</p>` : ""}</div></details>
     <details class="report-details"><summary>Missing evidence <span class="ledger-count">${unit.missing_evidence?.length || 0} gaps</span></summary><div class="detail-body"><ul class="miss">${(unit.missing_evidence || []).map((m) => `<li>${esc(m)}</li>`).join("")}</ul></div></details>
     <details class="report-details"><summary>Plain-language interpretation</summary><div class="detail-body"><div class="ai-box">${ai ? `${paras}<div class="ai-meta">${aiMeta}</div>` : "<p>No plain-language report was generated for this area. The evidence-engine conclusion is shown above.</p>"}</div></div></details>
     <details class="report-details"><summary>Measurement details &amp; weather</summary><div class="detail-body"><p class="what">${esc(dc.what)}</p><dl class="kv">${kv("Water lost", ha(dc.loss_ha), "loss")}${kv("Water gained", ha(dc.gain_ha), "gain")}${kv("Net change", `${dc.net_change_ha > 0 ? "+" : ""}${ha(dc.net_change_ha)}`)}${kv(`Radar-dark · ${nice(dc.dates[0])}`, ha(dc.water_before_ha))}${kv(`Radar-dark · ${nice(dc.dates[1])}`, ha(dc.water_after_ha))}${kv("Valid on both dates", pct(dc.valid_fraction))}</dl><p class="fine">Radar-dark area includes smooth ground and is not a measurement of true water area. Change requires a land/water flip and an HH signal shift of at least ${D.stats.parameters.min_delta_db} dB.</p>${contextBlock()}</div></details>
-    <div class="human-review-callout"><span>Human review</span><strong class="human-state pending" data-human-status="${id === null ? "reservoir" : `sector-${id}`}">Awaiting human review</strong><button type="button" data-review-open="review">Review this area</button><button type="button" data-review-open="validation">Inspect validation</button></div>
+
     <p class="fine report-disclaimer">Pairwise observation, not a forecast. Operational explanations require water-level and release records.</p>`;
+  $("#analysis-review").innerHTML =
+    `<div class="human-review-callout"><span>Human review</span><strong class="human-state pending" data-human-status="${id === null ? "reservoir" : `sector-${id}`}">Awaiting human review</strong><button type="button" data-review-open="review">Review this area</button><button type="button" data-review-open="validation">Inspect validation</button></div>`;
   el.setAttribute("aria-busy", "false");
   $("#btn-back")?.addEventListener("click", () => selectSector(null));
   $("#btn-export").setAttribute(

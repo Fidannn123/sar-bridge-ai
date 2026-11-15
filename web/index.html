@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/journey.css" />
     <link rel="stylesheet" href="css/review.css" />
+    <link rel="stylesheet" href="css/mission.css" />
     <link
       rel="icon"
       href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23234c3f'/><path d='M8 21a8 8 0 0 1 16 0M12 21a4 4 0 0 1 8 0' fill='none' stroke='white' stroke-width='2.4'/></svg>"
@@ -140,6 +141,9 @@
             aria-label="Interactive reservoir comparison map"
           >
             <div id="map"></div>
+            <div class="map-location-label" aria-hidden="true">
+              Mingachevir Reservoir
+            </div>
             <div class="toolbar" role="group" aria-label="Map layers">
               <div
                 class="seg"
@@ -316,8 +320,53 @@
           >
             <p class="loading-copy">Preparing the evidence report…</p>
           </section>
+          <div id="analysis-review" class="analysis-review"></div>
         </aside>
       </div>
+      <section class="mission-brief" aria-label="Observation provenance">
+        <div>
+          <strong>NASA–ISRO NISAR</strong><span>Radar observations</span>
+        </div>
+        <div>
+          <strong id="mission-pair">25 Jun → 11 Oct 2026</strong
+          ><span>Observation pair</span>
+        </div>
+        <div>
+          <strong id="mission-grid">20 m</strong><span>Analysis grid</span>
+        </div>
+        <div>
+          <strong>Human review</strong
+          ><span>Final decision stays with people</span>
+        </div>
+      </section>
+      <section class="mission-path" aria-label="Your investigation">
+        <ol>
+          <li>
+            <span class="mission-path-number">01</span>
+            <div>
+              <h2>Observe</h2>
+              <p>View the radar and optical observations of the reservoir.</p>
+            </div>
+          </li>
+          <li>
+            <span class="mission-path-number">02</span>
+            <div>
+              <h2>Compare</h2>
+              <p>See where the water has changed between the two dates.</p>
+            </div>
+          </li>
+          <li>
+            <span class="mission-path-number">03</span>
+            <div>
+              <h2>Explain</h2>
+              <p>
+                Interpret the change and review the evidence behind the result.
+              </p>
+            </div>
+          </li>
+        </ol>
+        <p>Two-date investigation. No forecasting or dam-safety claim.</p>
+      </section>
       <footer class="pipeline-footer">
         <span class="pipeline-label">From observation<br />to explanation</span>
         <ol>

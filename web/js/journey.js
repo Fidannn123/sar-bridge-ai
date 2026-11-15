@@ -46,9 +46,11 @@ window.SBJourney = (() => {
       applying = false,
       frame = 0,
       scrollTimer = 0,
+      stageAnimation,
       revision = 0;
 
     function stopMotion() {
+      stageAnimation?.cancel();
       revision++;
       cancelAnimationFrame(frame);
       clearTimeout(scrollTimer);
@@ -85,8 +87,17 @@ window.SBJourney = (() => {
       $("#journey-panel-content").scrollTop = 0;
     }
     function focusStage() {
-      const heading = $("#journey-panel h2");
+      const heading = $("#journey-panel h1, #journey-panel h2");
       heading?.focus({ preventScroll: true });
+      if (mode === "guided" && !reducedMotion()) {
+        stageAnimation = $("#journey-panel-content").animate(
+          [
+            { opacity: 0.25, transform: "translateY(8px)" },
+            { opacity: 1, transform: "translateY(0)" },
+          ],
+          { duration: 300, easing: "cubic-bezier(.2,.65,.3,1)" },
+        );
+      }
       $("#journey-announcement").textContent =
         mode === "intro"
           ? "Guided investigation ready."
@@ -110,13 +121,16 @@ window.SBJourney = (() => {
       $("#journey-location").textContent =
         `Mingachevir Reservoir, Azerbaijan · ${date(pair[0])} — ${date(pair[1])}`;
       $("#journey-panel-content").innerHTML =
-        `<h2 tabindex="-1">Follow the evidence.</h2>
-        <p class="journey-lead">See what changed. Compare two radar observations. Investigate what might explain it.</p>
-        <ol class="intro-sequence"><li><span class="sequence-number">01</span><div><h3>Observe</h3><p>Two NISAR radar acquisitions, ${days} days apart.</p></div></li><li><span class="sequence-number">02</span><div><h3>Compare</h3><p>Measure water loss and gain, sector by sector.</p></div></li><li><span class="sequence-number">03</span><div><h3>Explain</h3><p>Trace each hypothesis to independent evidence.</p></div></li></ol>
-        <div class="pair-label">NISAR observation pair</div>${pairHTML}
-        <button class="journey-primary intro-start" data-journey-action="start" type="button">Explore the change <span aria-hidden="true">→</span></button>
-        <button class="journey-text-button" data-journey-action="workspace" type="button">Open full workspace</button>
-        <p class="journey-footnote">A 60–90 second guided investigation. Advance at your own pace.</p>`;
+        `<h1 tabindex="-1">See the change.<span>Follow the evidence.</span></h1>
+        <p class="journey-lead">Two radar observations. One changing reservoir. Investigate the shoreline of Mingachevir, Azerbaijan.</p>
+        <div class="intro-actions"><button class="journey-primary intro-start" data-journey-action="start" type="button">Explore the change <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button>
+        <button class="journey-text-button" data-journey-action="workspace" type="button">Open full workspace</button></div>
+        <div class="intro-measure"><strong>${number(lossDominates ? loss : gain)}<small> ha</small></strong><div><span>radar-indicated water ${lossDominates ? "loss" : "gain"}</span><span>${days} days between observations</span></div></div>
+        <p class="journey-footnote">Provisional radar classification. Not field validated.</p>`;
+      $("#mission-pair").textContent =
+        `${date(pair[0]).replace(/ 20\d\d$/, "")} → ${date(pair[1])}`;
+      $("#mission-grid").textContent =
+        `${data.stats.parameters.pixel_size_m} m`;
       showScene({
         imagery: "S2",
         compare: false,
