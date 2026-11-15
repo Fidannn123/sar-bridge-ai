@@ -20,6 +20,7 @@ STEPS = [
     "06_evidence.py",
     "07_explain.py",
     "08_export_meta.py",
+    "09_validation.py",
 ]
 
 if __name__ == "__main__":

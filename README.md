@@ -15,6 +15,7 @@ SAR-BRIDGE AI compares two real NISAR L-band radar observations of the Mingachev
 | Change statistics | Total water gain and loss (ha), sectors analysed, valid-data coverage, same-day NISAR vs Sentinel-2 agreement |
 | AI analysis card | For the whole area or a selected sector: (1) detected change, (2) AI interpretation and ranked hypotheses, (3) supporting evidence, (4) missing evidence, (5) conclusion: *Supported hypothesis*, *Plausible but unconfirmed* or *Insufficient evidence* |
 | Methodology & data | Granule IDs, acquisition times, polarisations, the full NISAR acquisition inventory, processing steps, thresholds, evidence rules, sources, limitations |
+| Review & validation | Separate engine and human statuses; a local, version-linked review history with rationale, evidence reference and next action; import/export; pixel-exact Sentinel-2 proxy confusion counts and class-specific metrics |
 
 ## Results: 25 June → 11 October 2026
 
@@ -25,7 +26,9 @@ SAR-BRIDGE AI compares two real NISAR L-band radar observations of the Mingachev
 | Radar contrast | Water −14.7 dB vs land −8.8 dB (HH); HV −16.9 vs −15.0 dB, so HV carries almost no water signal (near the noise floor) and is marked *not separable* |
 | Evidence engine | Water-level decline: **Supported** in sector 3, **Plausible but unconfirmed** in sector 1, **Insufficient evidence** in sectors 2 and 4 and overall (radar and optical agree that water receded but disagree on exactly where); no significant change in sectors 5–10. Hydropower release and seasonality stay unverifiable without operational and multi-year data. |
 
-The radar captures the wide mudflats exposed in the shallow NW, but misses much of the thin (1–3 pixel) shoreline retreat along the steep central shores that Sentinel-2 sees. That gap is reported, not hidden.
+The radar highlights wide transitions in the shallow NW, while optical change also includes thin shoreline bands. Differences in dates, classification, filtering and registration can affect overlap; the physical cause of each disagreement remains to be checked.
+
+**Independent change comparison:** on 2,091,430 common-valid 20 m pixels, loss precision is **0.194**, recall **0.105**, F1 **0.136** and IoU **0.073** against the Sentinel-2 proxy. In Sector 03, loss F1 is **0.210**. These low overlaps require investigation; the 86.5% after-date water-mask agreement is **not change accuracy**. Gain precision is undefined because radar predicts no gain; gain F1 is zero because the optical proxy contains gain. No field-labelled ground truth has been used. The exact counts, dates, formulas and exclusions appear in the Validation tab and `web/data/validation.json`.
 
 ## Data
 
@@ -51,6 +54,8 @@ The radar captures the wide mudflats exposed in the shallow NW, but misses much 
 
 Rule-path tests for the evidence engine: `python pipeline/test_evidence.py`.
 
+The independent change comparison reuses the saved radar thresholds and exact change rules, then compares loss and gain against Sentinel-2 on the common-valid grid without spatial dilation. Reproduce it offline with `.venv/Scripts/python pipeline/09_validation.py`; rasters from the existing pipeline are required. SHA-256 source hashes bind the comparison to its measurements and evidence exports. The stable package ID binds human review records to this analysis version.
+
 ## Run it
 
 The checked-in observation package is ready to explore without credentials or a new pipeline run:
@@ -65,6 +70,10 @@ Open **http://127.0.0.1:8000**. The guided introduction starts with the measured
 
 Select a sector through the map labels, chart or analysis-area selector. The map selection, chart highlight, evidence verdict and shareable `#sector-3` URL stay in sync. **Export report** downloads the selected area's Markdown report with measured values, ranked hypotheses, evidence sources, missing observations, original granule identifiers and limitations. **Method & data** contains the processing and provenance details.
 
+**Review & validation** opens the review queue. The queue sorts changed sectors by radar loss area; it is not a hazard ranking. Add a reviewer name, review outcome, rationale and next action. Each save appends a timestamped measurement snapshot without modifying the engine verdict. Reviews survive reload on the same browser and can be exported/imported as JSON. The selected area's Markdown export includes its current-version reviews and optical comparison.
+
+This is explicitly a **local browser demo**: names and evidence references are self-reported, identities are not verified, and no requests are sent to operators or agencies. It has no authenticated multi-user review server. Older-package records remain in history but do not apply to a new package. Corrupt imports and storage failures do not overwrite existing records or display a false save success.
+
 ### Frontend / processing contract
 
 The processing backend is an offline Python pipeline, and the frontend is a buildless static application. There is no live API or browser-side model request. Python writes `web/data/`; `web/js/data.js` loads and checks that package before the workspace starts. `web/js/app.js` controls the map and evidence inspector, and `web/js/report.js` exports the current report. Credentials stay in the Python environment.
@@ -76,6 +85,9 @@ Validate the data package without network requests or model calls:
 ```powershell
 .venv/Scripts/python pipeline/validate_web.py
 .venv/Scripts/python pipeline/test_evidence.py
+.venv/Scripts/python pipeline/test_validation.py
+node --test scripts/test-review.mjs
+node scripts/validate-static.mjs
 ```
 
 `run_all.py` also validates the complete export package after processing. Refresh the browser after regenerating the exports. To regenerate observations and explanations, use the full pipeline workflow below:
@@ -92,8 +104,8 @@ Without `OPENAI_API_KEY`, the pipeline still runs, and the explanation is a clea
 
 ```
 pipeline/   00 study area · 01 NISAR metadata (CMR) · 02 NISAR subset streaming · 03 weather
-            04 Sentinel-2 · 05 change detection · 06 evidence engine · 07 LLM explanations · 08 export
-web/        static site (Leaflet), deployed by .github/workflows/pages.yml; data/ is generated
+            04 Sentinel-2 · 05 change detection · 06 evidence engine · 07 LLM explanations · 08 export · 09 proxy comparison
+web/        static site (Leaflet), deployed to Render through render.yaml; data/ is generated
 data/context/  small provenance + supplemental datasets (committed); data/interim/ rasters (ignored)
 ```
 

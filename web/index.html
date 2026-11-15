@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/journey.css" />
+    <link rel="stylesheet" href="css/review.css" />
     <link
       rel="icon"
       href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23234c3f'/><path d='M8 21a8 8 0 0 1 16 0M12 21a4 4 0 0 1 8 0' fill='none' stroke='white' stroke-width='2.4'/></svg>"
@@ -45,6 +46,9 @@
         </button>
         <button id="btn-workspace" type="button" aria-pressed="false">
           Workspace
+        </button>
+        <button id="btn-review" type="button" disabled>
+          Review<span class="nav-review-suffix"> &amp; validation</span>
         </button>
         <button id="btn-method" type="button">
           Method &amp; data <span aria-hidden="true">↗</span>
@@ -351,12 +355,73 @@
         <div id="method-body"></div>
       </div>
     </div>
+    <div
+      class="review-overlay"
+      id="review-workspace"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="review-title"
+      hidden
+    >
+      <div class="review-sheet">
+        <header class="review-sheet-head">
+          <div>
+            <h2 id="review-title">Human review</h2>
+            <p>Local demo · saved in this browser</p>
+          </div>
+          <button type="button" class="btn" id="review-close">Close ×</button>
+        </header>
+        <div class="review-toolbar">
+          <div
+            class="review-tabs"
+            role="group"
+            aria-label="Review workspace view"
+          >
+            <button
+              type="button"
+              data-review-tab="review"
+              class="active"
+              aria-pressed="true"
+            >
+              Review queue</button
+            ><button
+              type="button"
+              data-review-tab="validation"
+              aria-pressed="false"
+            >
+              Validation
+            </button>
+          </div>
+          <label class="btn review-import-label"
+            >Import log<input
+              id="review-import"
+              type="file"
+              accept=".json,application/json"
+              aria-label="Import review log"
+          /></label>
+        </div>
+        <div class="review-workflow" aria-label="Human decision workflow">
+          <span>01 Measurement</span><span>02 Engine hypothesis</span
+          ><span>03 Independent comparison</span
+          ><strong>04 Human review &amp; decision</strong>
+        </div>
+        <p id="review-package" class="review-package"></p>
+        <p id="review-message" class="review-message" role="status"></p>
+        <div id="review-body" class="review-body"></div>
+        <p class="review-origin">
+          NASA–ISRO NISAR · Sentinel-2 optical proxy · Decisions remain with
+          people
+        </p>
+      </div>
+    </div>
     <noscript
       >This application needs JavaScript to display the interactive map and
       evidence report.</noscript
     >
     <script src="vendor/leaflet/leaflet.js"></script>
     <script src="js/data.js"></script>
+    <script src="js/review-store.js"></script>
+    <script src="js/review.js"></script>
     <script src="js/report.js"></script>
     <script src="js/journey.js"></script>
     <script src="js/app.js"></script>

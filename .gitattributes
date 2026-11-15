@@ -1,0 +1,2 @@
+# Keep provenance hashes identical in Windows worktrees and Render's Linux build.
+web/data/*.json text eol=lf

@@ -52,6 +52,52 @@ window.SBReport = (() => {
         "",
       );
     lines.push(
+      "## Independent optical-proxy comparison",
+      "",
+      "The comparison is against Sentinel-2, not field ground truth. Pixel-exact disagreement includes date and sensor differences.",
+      "",
+    );
+    const comparison =
+      unit.id === undefined
+        ? data.validation?.study_area
+        : data.validation?.sectors.find((item) => item.id === unit.id);
+    if (comparison)
+      for (const kind of ["loss", "gain"]) {
+        const m = comparison[kind];
+        lines.push(
+          `- Water ${kind}: precision ${m.precision ?? "n/a"}; recall ${m.recall ?? "n/a"}; F1 ${m.f1 ?? "n/a"}; IoU ${m.iou ?? "n/a"}.`,
+          `  Common-valid pixel counts: overlap ${m.tp_px}, radar only ${m.fp_px}, optical only ${m.fn_px}, neither ${m.tn_px}.`,
+        );
+      }
+    const review = window.SBReview?.reportFor(unit);
+    lines.push(
+      "",
+      "## Human review",
+      "",
+      "Local browser demo. Reviewer identities and submitted evidence are self-reported, not authenticated sign-offs.",
+      `Analysis package: ${data.validation?.package_id || "unavailable"}`,
+      "",
+    );
+    if (review?.records.length)
+      for (const record of review.records) {
+        lines.push(
+          `- Reviewer: ${record.reviewer}; time (UTC): ${record.created_utc}`,
+          `  Outcome: ${window.SBReviewStore.outcomes[record.outcome]}`,
+          `  Rationale: ${record.rationale}`,
+          `  Next action: ${window.SBReviewStore.actions[record.next_action]}`,
+          `  Evidence reference: ${record.evidence_reference || "not supplied"}`,
+          `  Record ID: ${record.id}`,
+          "",
+        );
+      }
+    else
+      lines.push(
+        review?.storage_available === false
+          ? "Review storage is unavailable in this browser."
+          : "Awaiting human review for this analysis package.",
+        "",
+      );
+    lines.push(
       "## Missing evidence",
       "",
       ...(unit.missing_evidence || []).map((e) => `- ${e}`),

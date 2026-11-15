@@ -105,7 +105,7 @@ window.SBJourney = (() => {
       step = 0;
       setMode("intro");
       $("#journey-measure").textContent =
-        `${number(lossDominates ? loss : gain)} hectares of water ${lossDominates ? "loss" : "gain"}.`;
+        `${number(lossDominates ? loss : gain)} hectares flagged by radar.`;
       $("#journey-question").textContent = `What changed in ${days} days?`;
       $("#journey-location").textContent =
         `Mingachevir Reservoir, Azerbaijan · ${date(pair[0])} — ${date(pair[1])}`;
@@ -197,7 +197,7 @@ window.SBJourney = (() => {
           .filter((e) => /outflow|in-situ gauge|withdrawal records/.test(e))
           .map((e) => `<li>${escape(e)}</li>`)
           .join("")}</ul></details>
-        <div class="chain-actions"><button class="journey-text-button" type="button" data-journey-action="full-report">Open full sector report ↗</button><button class="journey-text-button" type="button" data-journey-action="overview">Compare the whole-reservoir verdict ↗</button></div>`;
+        <div class="journey-human-review"><span>Human review</span><strong data-human-status="sector-${featured.id}" class="human-state pending">Awaiting human review</strong><button type="button" class="journey-primary" data-review-open="review">Review this sector</button><button type="button" class="journey-text-button" data-review-open="validation">Inspect validation</button></div><div class="chain-actions"><button class="journey-text-button" type="button" data-journey-action="full-report">Open full sector report ↗</button><button class="journey-text-button" type="button" data-journey-action="overview">Compare the whole-reservoir verdict ↗</button></div>`;
     }
     function updateControls() {
       document.querySelectorAll("[data-step]").forEach((button) => {
@@ -258,6 +258,7 @@ window.SBJourney = (() => {
         sector: step === 2 ? featured.id : null,
         position: 0.5,
       });
+      SBReview.refreshBadges();
       updateControls();
       focusStage();
       const currentRevision = revision;
@@ -340,6 +341,7 @@ window.SBJourney = (() => {
       if (
         mode !== "guided" ||
         !$("#method").hidden ||
+        !$("#review-workspace").hidden ||
         event.altKey ||
         event.ctrlKey ||
         event.metaKey ||

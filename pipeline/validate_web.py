@@ -6,6 +6,7 @@ No network, credentials or model calls are needed.
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,6 +27,9 @@ def validate(web: Path = WEB) -> None:
     sectors = read("sectors.geojson")
     layers = read("layers.json")
     meta = read("meta.json")
+    validation = read("validation.json")
+    for key in ("stats", "analysis"):
+        require(hashlib.sha256((web / "data" / f"{key}.json").read_bytes()).hexdigest() == validation["source"][f"{key}_sha256"], "Stale validation package")
     ids = [unit["id"] for unit in analysis["sectors"]]
     require(len(ids) == len(set(ids)) == stats['n_sectors'], 'Duplicate or missing analysis sectors')
     features = {f["properties"]["id"]: f for f in sectors["features"]}

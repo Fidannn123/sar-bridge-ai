@@ -1,0 +1,427 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-11-15T06:35:27Z",
+  "source": {
+    "stats_sha256": "87ec1c157f1fdbacf36808e81952a422cd1eda17e4d35beadbe5f04fe2c3b931",
+    "analysis_sha256": "bb57623e68154e8fbfaeb7e12d33111cc28160f6b934837a95ce87ddbb58cb6a"
+  },
+  "reference_type": "independent_optical_proxy",
+  "ground_truth_validated": false,
+  "radar_dates": [
+    "2026-06-25",
+    "2026-10-11"
+  ],
+  "optical_scenes": {
+    "before": {
+      "item_id": "S2A_38TPL_20260703_0_L2A",
+      "datetime_utc": "2026-07-03T07:48:44Z",
+      "days_from_nisar": 8.25,
+      "paired_nisar": "before",
+      "scene_cloud_cover_pct": 3.3,
+      "valid_fraction_in_zone": 1.0,
+      "water_area_ha_in_zone": 54300.0,
+      "stac_url": "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a/items/S2A_38TPL_20260703_0_L2A"
+    },
+    "after": {
+      "item_id": "S2A_38TPL_20261011_0_L2A",
+      "datetime_utc": "2026-10-11T07:48:40Z",
+      "days_from_nisar": 0.25,
+      "paired_nisar": "after",
+      "scene_cloud_cover_pct": 4.4,
+      "valid_fraction_in_zone": 0.9968,
+      "water_area_ha_in_zone": 53384.0,
+      "stac_url": "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a/items/S2A_38TPL_20261011_0_L2A"
+    }
+  },
+  "method": {
+    "comparison": "pixel_exact",
+    "grid_m": 20,
+    "pixel_area_ha": 0.04,
+    "domain": "Both NISAR dates and both cloud-masked Sentinel-2 dates valid inside the analysis sectors.",
+    "change_rule": "Existing HH land/water flip, minimum 3 dB change, minimum 1 ha patch; no tolerance dilation in these confusion counts."
+  },
+  "limitations": [
+    "Sentinel-2 is an independent optical proxy, not field ground truth.",
+    "The before optical observation is eight calendar days after the before radar observation; after scenes share a calendar date, not an acquisition time.",
+    "Pixel-exact comparison penalises thin shoreline bands and sensor misregistration; spatial-tolerance checks remain separate evidence.",
+    "Stable areas dominate overall mask agreement. It is not change-detection accuracy or causal confidence.",
+    "Precision is undefined when radar predicts no pixels of a class. Undefined metrics are null, never perfect scores."
+  ],
+  "study_area": {
+    "id": null,
+    "name": "Whole study area",
+    "common_valid_px": 2091430,
+    "common_valid_ha": 83657.2,
+    "excluded_from_comparison_ha": 280.0,
+    "radar_loss_ha": 495.2,
+    "radar_gain_ha": 0.0,
+    "loss": {
+      "tp_px": 2349,
+      "fp_px": 9753,
+      "fn_px": 20106,
+      "tn_px": 2059222,
+      "predicted_positive_px": 12102,
+      "reference_positive_px": 22455,
+      "precision": 0.1941,
+      "recall": 0.104609,
+      "f1": 0.135949,
+      "iou": 0.072932
+    },
+    "gain": {
+      "tp_px": 0,
+      "fp_px": 0,
+      "fn_px": 856,
+      "tn_px": 2090574,
+      "predicted_positive_px": 0,
+      "reference_positive_px": 856,
+      "precision": null,
+      "recall": 0.0,
+      "f1": 0.0,
+      "iou": 0.0
+    },
+    "after_water_mask_agreement": 0.864878
+  },
+  "sectors": [
+    {
+      "id": 1,
+      "name": "Sector 1 (NW end)",
+      "common_valid_px": 235579,
+      "common_valid_ha": 9423.16,
+      "excluded_from_comparison_ha": 98.64,
+      "radar_loss_ha": 146.3,
+      "radar_gain_ha": 0.0,
+      "loss": {
+        "tp_px": 1103,
+        "fp_px": 2275,
+        "fn_px": 4926,
+        "tn_px": 227275,
+        "predicted_positive_px": 3378,
+        "reference_positive_px": 6029,
+        "precision": 0.326525,
+        "recall": 0.182949,
+        "f1": 0.234506,
+        "iou": 0.132828
+      },
+      "gain": {
+        "tp_px": 0,
+        "fp_px": 0,
+        "fn_px": 105,
+        "tn_px": 235474,
+        "predicted_positive_px": 0,
+        "reference_positive_px": 105,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0
+      },
+      "after_water_mask_agreement": 0.769211
+    },
+    {
+      "id": 2,
+      "name": "Sector 2",
+      "common_valid_px": 307161,
+      "common_valid_ha": 12286.44,
+      "excluded_from_comparison_ha": 6.44,
+      "radar_loss_ha": 279.6,
+      "radar_gain_ha": 0.0,
+      "loss": {
+        "tp_px": 800,
+        "fp_px": 6191,
+        "fn_px": 4482,
+        "tn_px": 295688,
+        "predicted_positive_px": 6991,
+        "reference_positive_px": 5282,
+        "precision": 0.114433,
+        "recall": 0.151458,
+        "f1": 0.130367,
+        "iou": 0.069729
+      },
+      "gain": {
+        "tp_px": 0,
+        "fp_px": 0,
+        "fn_px": 200,
+        "tn_px": 306961,
+        "predicted_positive_px": 0,
+        "reference_positive_px": 200,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0
+      },
+      "after_water_mask_agreement": 0.908882
+    },
+    {
+      "id": 3,
+      "name": "Sector 3",
+      "common_valid_px": 257656,
+      "common_valid_ha": 10306.24,
+      "excluded_from_comparison_ha": 0.0,
+      "radar_loss_ha": 34.3,
+      "radar_gain_ha": 0.0,
+      "loss": {
+        "tp_px": 355,
+        "fp_px": 502,
+        "fn_px": 2172,
+        "tn_px": 254627,
+        "predicted_positive_px": 857,
+        "reference_positive_px": 2527,
+        "precision": 0.414236,
+        "recall": 0.140483,
+        "f1": 0.209811,
+        "iou": 0.1172
+      },
+      "gain": {
+        "tp_px": 0,
+        "fp_px": 0,
+        "fn_px": 50,
+        "tn_px": 257606,
+        "predicted_positive_px": 0,
+        "reference_positive_px": 50,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0
+      },
+      "after_water_mask_agreement": 0.806758
+    },
+    {
+      "id": 4,
+      "name": "Sector 4",
+      "common_valid_px": 237402,
+      "common_valid_ha": 9496.08,
+      "excluded_from_comparison_ha": 1.68,
+      "radar_loss_ha": 20.8,
+      "radar_gain_ha": 0.0,
+      "loss": {
+        "tp_px": 0,
+        "fp_px": 521,
+        "fn_px": 1537,
+        "tn_px": 235344,
+        "predicted_positive_px": 521,
+        "reference_positive_px": 1537,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0
+      },
+      "gain": {
+        "tp_px": 0,
+        "fp_px": 0,
+        "fn_px": 149,
+        "tn_px": 237253,
+        "predicted_positive_px": 0,
+        "reference_positive_px": 149,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0
+      },
+      "after_water_mask_agreement": 0.84014
+    },
+    {
+      "id": 5,
+      "name": "Sector 5",
+      "common_valid_px": 222284,
+      "common_valid_ha": 8891.36,
+      "excluded_from_comparison_ha": 67.2,
+      "radar_loss_ha": 2.7,
+      "radar_gain_ha": 0.0,
+      "loss": {
+        "tp_px": 0,
+        "fp_px": 68,
+        "fn_px": 1119,
+        "tn_px": 221097,
+        "predicted_positive_px": 68,
+        "reference_positive_px": 1119,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0
+      },
+      "gain": {
+        "tp_px": 0,
+        "fp_px": 0,
+        "fn_px": 79,
+        "tn_px": 222205,
+        "predicted_positive_px": 0,
+        "reference_positive_px": 79,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0
+      },
+      "after_water_mask_agreement": 0.916337
+    },
+    {
+      "id": 6,
+      "name": "Sector 6",
+      "common_valid_px": 204672,
+      "common_valid_ha": 8186.88,
+      "excluded_from_comparison_ha": 100.96,
+      "radar_loss_ha": 1.0,
+      "radar_gain_ha": 0.0,
+      "loss": {
+        "tp_px": 4,
+        "fp_px": 21,
+        "fn_px": 1025,
+        "tn_px": 203622,
+        "predicted_positive_px": 25,
+        "reference_positive_px": 1029,
+        "precision": 0.16,
+        "recall": 0.003887,
+        "f1": 0.00759,
+        "iou": 0.00381
+      },
+      "gain": {
+        "tp_px": 0,
+        "fp_px": 0,
+        "fn_px": 95,
+        "tn_px": 204577,
+        "predicted_positive_px": 0,
+        "reference_positive_px": 95,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0
+      },
+      "after_water_mask_agreement": 0.962672
+    },
+    {
+      "id": 7,
+      "name": "Sector 7",
+      "common_valid_px": 193333,
+      "common_valid_ha": 7733.32,
+      "excluded_from_comparison_ha": 4.0,
+      "radar_loss_ha": 0.0,
+      "radar_gain_ha": 0.0,
+      "loss": {
+        "tp_px": 0,
+        "fp_px": 0,
+        "fn_px": 852,
+        "tn_px": 192481,
+        "predicted_positive_px": 0,
+        "reference_positive_px": 852,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0
+      },
+      "gain": {
+        "tp_px": 0,
+        "fp_px": 0,
+        "fn_px": 8,
+        "tn_px": 193325,
+        "predicted_positive_px": 0,
+        "reference_positive_px": 8,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0
+      },
+      "after_water_mask_agreement": 0.866414
+    },
+    {
+      "id": 8,
+      "name": "Sector 8",
+      "common_valid_px": 202880,
+      "common_valid_ha": 8115.2,
+      "excluded_from_comparison_ha": 0.68,
+      "radar_loss_ha": 3.2,
+      "radar_gain_ha": 0.0,
+      "loss": {
+        "tp_px": 17,
+        "fp_px": 62,
+        "fn_px": 1227,
+        "tn_px": 201574,
+        "predicted_positive_px": 79,
+        "reference_positive_px": 1244,
+        "precision": 0.21519,
+        "recall": 0.013666,
+        "f1": 0.025699,
+        "iou": 0.013017
+      },
+      "gain": {
+        "tp_px": 0,
+        "fp_px": 0,
+        "fn_px": 146,
+        "tn_px": 202734,
+        "predicted_positive_px": 0,
+        "reference_positive_px": 146,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0
+      },
+      "after_water_mask_agreement": 0.918943
+    },
+    {
+      "id": 9,
+      "name": "Sector 9",
+      "common_valid_px": 149432,
+      "common_valid_ha": 5977.28,
+      "excluded_from_comparison_ha": 0.28,
+      "radar_loss_ha": 2.8,
+      "radar_gain_ha": 0.0,
+      "loss": {
+        "tp_px": 70,
+        "fp_px": 0,
+        "fn_px": 1385,
+        "tn_px": 147977,
+        "predicted_positive_px": 70,
+        "reference_positive_px": 1455,
+        "precision": 1.0,
+        "recall": 0.04811,
+        "f1": 0.091803,
+        "iou": 0.04811
+      },
+      "gain": {
+        "tp_px": 0,
+        "fp_px": 0,
+        "fn_px": 20,
+        "tn_px": 149412,
+        "predicted_positive_px": 0,
+        "reference_positive_px": 20,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0
+      },
+      "after_water_mask_agreement": 0.891335
+    },
+    {
+      "id": 10,
+      "name": "Sector 10 (SE end, dam)",
+      "common_valid_px": 81031,
+      "common_valid_ha": 3241.24,
+      "excluded_from_comparison_ha": 0.12,
+      "radar_loss_ha": 4.5,
+      "radar_gain_ha": 0.0,
+      "loss": {
+        "tp_px": 0,
+        "fp_px": 113,
+        "fn_px": 1381,
+        "tn_px": 79537,
+        "predicted_positive_px": 113,
+        "reference_positive_px": 1381,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0
+      },
+      "gain": {
+        "tp_px": 0,
+        "fp_px": 0,
+        "fn_px": 4,
+        "tn_px": 81027,
+        "predicted_positive_px": 0,
+        "reference_positive_px": 4,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0,
+        "iou": 0.0
+      },
+      "after_water_mask_agreement": 0.657489
+    }
+  ],
+  "package_id": "855442294bc387edb3f14d8a217ce743677f745eef683b8d696d39f442a973c5"
+}

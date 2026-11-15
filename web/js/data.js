@@ -9,8 +9,16 @@ window.SBData = (() => {
     sectors: "data/sectors.geojson",
     polys: "data/change_polygons.geojson",
     osm: "data/reservoir_osm.geojson",
+    validation: "data/validation.json",
   };
-  const required = new Set(["layers", "stats", "analysis", "meta", "sectors"]);
+  const required = new Set([
+    "layers",
+    "stats",
+    "analysis",
+    "meta",
+    "sectors",
+    "validation",
+  ]);
   function validate(data) {
     const { stats, analysis, layers, sectors, meta } = data;
     if (
@@ -111,9 +119,93 @@ window.SBData = (() => {
         );
       }
     }
+    validateComparison(data);
+  }
+  function validateComparison({ validation: v, stats, analysis }) {
+    if (
+      !v ||
+      v.schema_version !== 1 ||
+      !/^[a-f0-9]{64}$/.test(v.package_id || "") ||
+      v.ground_truth_validated !== false ||
+      v.reference_type !== "independent_optical_proxy" ||
+      !Array.isArray(v.sectors) ||
+      v.sectors.length !== analysis.sectors.length ||
+      new Set(v.sectors.map((s) => s.id)).size !== v.sectors.length ||
+      !Array.isArray(v.radar_dates) ||
+      v.radar_dates.length !== 2 ||
+      !v.radar_dates.every(
+        (d, i) => d === analysis.study_area.detected_change.dates[i],
+      ) ||
+      !["stats", "analysis"].every((key) =>
+        /^[a-f0-9]{64}$/.test(v.source?.[`${key}_sha256`] || ""),
+      ) ||
+      !v.optical_scenes?.before?.datetime_utc ||
+      !v.optical_scenes?.after?.datetime_utc ||
+      !Array.isArray(v.limitations) ||
+      !Number.isFinite(v.method?.grid_m) ||
+      v.method.grid_m <= 0
+    ) {
+      throw new Error(
+        "The optical-proxy comparison package is incomplete or uses different observations.",
+      );
+    }
+    const safeRatio = (a, b) => (b ? a / b : null);
+    for (const item of [v.study_area, ...v.sectors]) {
+      const unit =
+        item?.id === null
+          ? analysis.study_area
+          : analysis.sectors.find((s) => s.id === item?.id);
+      if (
+        !unit ||
+        !Number.isInteger(item.common_valid_px) ||
+        item.common_valid_px < 0 ||
+        !Number.isFinite(item.common_valid_ha) ||
+        item.common_valid_ha < 0 ||
+        !Number.isFinite(item.excluded_from_comparison_ha) ||
+        item.excluded_from_comparison_ha < 0 ||
+        !Number.isFinite(item.after_water_mask_agreement) ||
+        item.after_water_mask_agreement < 0 ||
+        item.after_water_mask_agreement > 1
+      )
+        throw new Error("Invalid comparison sector or pixel domain.");
+      for (const kind of ["loss", "gain"]) {
+        const m = item[kind];
+        if (
+          !Number.isFinite(item[`radar_${kind}_ha`]) ||
+          Math.abs(
+            item[`radar_${kind}_ha`] - unit.detected_change[`${kind}_ha`],
+          ) > 0.001 ||
+          !m ||
+          ![m.tp_px, m.fp_px, m.fn_px, m.tn_px].every(
+            (n) => Number.isInteger(n) && n >= 0,
+          ) ||
+          m.tp_px + m.fp_px + m.fn_px + m.tn_px !== item.common_valid_px
+        )
+          throw new Error(
+            "Comparison counts do not match the observation package.",
+          );
+        const expected = {
+          precision: safeRatio(m.tp_px, m.tp_px + m.fp_px),
+          recall: safeRatio(m.tp_px, m.tp_px + m.fn_px),
+          f1: safeRatio(2 * m.tp_px, 2 * m.tp_px + m.fp_px + m.fn_px),
+          iou: safeRatio(m.tp_px, m.tp_px + m.fp_px + m.fn_px),
+        };
+        for (const [key, value] of Object.entries(expected)) {
+          if (
+            value === null
+              ? m[key] !== null
+              : !Number.isFinite(m[key]) || Math.abs(value - m[key]) > 0.000001
+          )
+            throw new Error(
+              "Comparison metrics do not match their confusion counts.",
+            );
+        }
+      }
+    }
   }
   async function load() {
     const failures = [];
+    const raw = {};
     const entries = await Promise.all(
       Object.entries(files).map(async ([key, url]) => {
         const controller = new AbortController();
@@ -124,7 +216,8 @@ window.SBData = (() => {
             signal: controller.signal,
           });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          return [key, await response.json()];
+          raw[key] = await response.text();
+          return [key, JSON.parse(raw[key])];
         } catch {
           failures.push(key);
           return [key, null];
@@ -140,6 +233,21 @@ window.SBData = (() => {
       );
     const data = Object.fromEntries(entries);
     validate(data);
+    if (globalThis.crypto?.subtle) {
+      for (const key of ["stats", "analysis"]) {
+        const digest = await crypto.subtle.digest(
+          "SHA-256",
+          new TextEncoder().encode(raw[key]),
+        );
+        const hex = [...new Uint8Array(digest)]
+          .map((n) => n.toString(16).padStart(2, "0"))
+          .join("");
+        if (hex !== data.validation.source[`${key}_sha256`])
+          throw new Error(
+            "Mixed analysis versions detected. Reload the complete observation package.",
+          );
+      }
+    }
     return {
       data,
       warnings: failures.map(

@@ -485,10 +485,10 @@ function renderSummary() {
   const icon = (path) =>
     `<span class="stat-icon"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="${path}"/></svg></span>`;
   $("#stats").innerHTML = `
-    <div class="stat loss">${icon("m3 5 5 5 4-3 5 8m-6 0h6V9")}<div class="k">Water lost</div><div class="v">${num(t.loss_ha, 1)}<small>ha</small></div><div class="s">Radar-detected water → land</div></div>
-    <div class="stat gain">${icon("m3 15 6-6 3 3 5-8m-6 0h6v6")}<div class="k">Water gained</div><div class="v">${num(t.gain_ha, 1)}<small>ha</small></div><div class="s">Radar-detected land → water</div></div>
+    <div class="stat loss">${icon("m3 5 5 5 4-3 5 8m-6 0h6V9")}<div class="k">Radar-indicated loss</div><div class="v">${num(t.loss_ha, 1)}<small>ha</small></div><div class="s">Radar-detected water → land</div></div>
+    <div class="stat gain">${icon("m3 15 6-6 3 3 5-8m-6 0h6v6")}<div class="k">Radar-indicated gain</div><div class="v">${num(t.gain_ha, 1)}<small>ha</small></div><div class="s">Radar-detected land → water</div></div>
     <div class="stat">${icon("m4 10 4 4 8-9")}<div class="k">Valid radar coverage</div><div class="v">${num(100 * t.valid_fraction, 2)}<small>%</small></div><div class="s">${ha(t.insufficient_data_ha)} with insufficient data</div></div>
-    <div class="stat">${icon("m3 7 7-4 7 4-7 4-7-4Zm0 4 7 4 7-4M3 15l7 4 7-4")}<div class="k">Optical agreement</div><div class="v">${Number.isFinite(agreement) ? `${num(100 * agreement, 1)}<small>%</small>` : "n/a"}</div><div class="s">${Number.isFinite(agreement) ? `Same-day water mask · ${nice(st.pair.after.date)}` : "Independent optical comparison unavailable"}</div></div>`;
+    <div class="stat">${icon("m3 7 7-4 7 4-7 4-7-4Zm0 4 7 4 7-4M3 15l7 4 7-4")}<div class="k">Water-mask agreement</div><div class="v">${Number.isFinite(agreement) ? `${num(100 * agreement, 1)}<small>%</small>` : "n/a"}</div><div class="s">${Number.isFinite(agreement) ? `Same-day water mask · ${nice(st.pair.after.date)}` : "Independent optical comparison unavailable"}</div></div>`;
   $("#stats").setAttribute("aria-busy", "false");
 }
 
@@ -755,6 +755,7 @@ function renderCard(unit, id) {
     <details class="report-details"><summary>Missing evidence <span class="ledger-count">${unit.missing_evidence?.length || 0} gaps</span></summary><div class="detail-body"><ul class="miss">${(unit.missing_evidence || []).map((m) => `<li>${esc(m)}</li>`).join("")}</ul></div></details>
     <details class="report-details"><summary>Plain-language interpretation</summary><div class="detail-body"><div class="ai-box">${ai ? `${paras}<div class="ai-meta">${aiMeta}</div>` : "<p>No plain-language report was generated for this area. The evidence-engine conclusion is shown above.</p>"}</div></div></details>
     <details class="report-details"><summary>Measurement details &amp; weather</summary><div class="detail-body"><p class="what">${esc(dc.what)}</p><dl class="kv">${kv("Water lost", ha(dc.loss_ha), "loss")}${kv("Water gained", ha(dc.gain_ha), "gain")}${kv("Net change", `${dc.net_change_ha > 0 ? "+" : ""}${ha(dc.net_change_ha)}`)}${kv(`Radar-dark · ${nice(dc.dates[0])}`, ha(dc.water_before_ha))}${kv(`Radar-dark · ${nice(dc.dates[1])}`, ha(dc.water_after_ha))}${kv("Valid on both dates", pct(dc.valid_fraction))}</dl><p class="fine">Radar-dark area includes smooth ground and is not a measurement of true water area. Change requires a land/water flip and an HH signal shift of at least ${D.stats.parameters.min_delta_db} dB.</p>${contextBlock()}</div></details>
+    <div class="human-review-callout"><span>Human review</span><strong class="human-state pending" data-human-status="${id === null ? "reservoir" : `sector-${id}`}">Awaiting human review</strong><button type="button" data-review-open="review">Review this area</button><button type="button" data-review-open="validation">Inspect validation</button></div>
     <p class="fine report-disclaimer">Pairwise observation, not a forecast. Operational explanations require water-level and release records.</p>`;
   el.setAttribute("aria-busy", "false");
   $("#btn-back")?.addEventListener("click", () => selectSector(null));
@@ -762,6 +763,7 @@ function renderCard(unit, id) {
     "aria-label",
     `Export report for ${isTotal ? "whole reservoir" : unit.name}`,
   );
+  SBReview.refreshBadges();
   el.scrollTop = 0;
 }
 
@@ -899,6 +901,7 @@ function renderMethod() {
     renderContext();
     renderSummary();
     fromHash();
+    SBReview.create({ data: D, activeUnit, selectSector });
     SBJourney.create({
       data: D,
       scene(options) {
