@@ -1,7 +1,15 @@
 /* Presenter-paced investigation. All measurements and verdicts come from the export package. */
 "use strict";
 window.SBJourney = (() => {
-  function create({ data, scene, select, fit, split, reducedMotion }) {
+  function create({
+    data,
+    scene,
+    select,
+    fit,
+    split,
+    reducedMotion,
+    overview,
+  }) {
     const $ = (selector) => document.querySelector(selector);
     const escape = (value) =>
       String(value ?? "").replace(
@@ -59,6 +67,7 @@ window.SBJourney = (() => {
     function setViewURL(view) {
       const url = new URL(location.href);
       url.searchParams.set("view", view);
+      if (view === "dashboard") url.hash = "";
       history.replaceState(null, "", url.pathname + url.search + url.hash);
     }
     function showScene(options) {
@@ -73,17 +82,21 @@ window.SBJourney = (() => {
       mode = value;
       document.body.dataset.experience =
         value === "guided" ? ["observe", "compare", "explain"][step] : value;
-      $("#btn-tour").classList.toggle("active", value !== "workspace");
-      $("#btn-tour").setAttribute(
-        "aria-pressed",
-        String(value !== "workspace"),
-      );
+      const demoActive = value === "intro" || value === "guided";
+      $("#btn-tour").classList.toggle("active", demoActive);
+      $("#btn-tour").setAttribute("aria-pressed", String(demoActive));
       $("#btn-workspace").classList.toggle("active", value === "workspace");
       $("#btn-workspace").setAttribute(
         "aria-pressed",
         String(value === "workspace"),
       );
       $("#journey-controls").hidden = value !== "guided";
+      $("#dashboard").hidden = value !== "dashboard";
+      $("#btn-dashboard").classList.toggle("active", value === "dashboard");
+      $("#btn-dashboard").setAttribute(
+        "aria-pressed",
+        String(value === "dashboard"),
+      );
       $("#journey-panel-content").scrollTop = 0;
     }
     function focusStage() {
@@ -110,6 +123,14 @@ window.SBJourney = (() => {
         showScene({ compare: true, change: true, sectors: true });
       if (updateURL) setViewURL("workspace");
       requestAnimationFrame(() => fit({ animate: false, preserveView: true }));
+    }
+    function dashboard({ updateURL = true, focus = true } = {}) {
+      stopMotion();
+      setMode("dashboard");
+      if (updateURL) setViewURL("dashboard");
+      overview.refresh();
+      window.scrollTo({ top: 0, behavior: "instant" });
+      if (focus) $("#dashboard-title").focus({ preventScroll: true });
     }
     function intro({ updateURL = true } = {}) {
       stopMotion();
@@ -310,6 +331,8 @@ window.SBJourney = (() => {
       });
     });
     $("#btn-workspace").addEventListener("click", () => fullWorkspace());
+    $("#btn-dashboard").disabled = false;
+    $("#btn-dashboard").addEventListener("click", () => dashboard());
     $("#btn-mobile-start").disabled = false;
     $("#btn-mobile-start").addEventListener("click", () => go(0));
     $("#btn-journey-next").addEventListener("click", () => go(step + 1));
@@ -349,6 +372,10 @@ window.SBJourney = (() => {
     });
     document.addEventListener("sar:sector-selected", () => {
       if (!applying && mode !== "workspace")
+        fullWorkspace({ restoreLayers: false });
+    });
+    window.addEventListener("hashchange", () => {
+      if (/^#sector[-=]\d+$/.test(location.hash) && mode !== "workspace")
         fullWorkspace({ restoreLayers: false });
     });
     document.addEventListener("keydown", (event) => {
@@ -397,6 +424,8 @@ window.SBJourney = (() => {
       /^#(?:sector[-=]|method)/.test(location.hash);
     if (workspaceRequested)
       fullWorkspace({ updateURL: false, restoreLayers: false });
+    else if (new URL(location.href).searchParams.get("view") === "dashboard")
+      dashboard({ updateURL: false, focus: false });
     else intro({ updateURL: false });
     return { intro, stopMotion };
   }

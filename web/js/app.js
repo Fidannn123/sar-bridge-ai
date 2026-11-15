@@ -460,6 +460,7 @@ function initControls() {
   });
   window.addEventListener("hashchange", fromHash);
   new ResizeObserver(() => {
+    if (!$("#map").clientWidth) return;
     map.invalidateSize({ pan: false });
     if (S.selected === null)
       map.fitBounds(fullBounds(), { padding: [2, 2], animate: false });
@@ -903,9 +904,39 @@ function renderMethod() {
     renderContext();
     renderSummary();
     fromHash();
-    SBReview.create({ data: D, activeUnit, selectSector });
+    SBReview.create({
+      data: D,
+      activeUnit: () =>
+        document.body.dataset.experience === "dashboard"
+          ? D.analysis.study_area
+          : activeUnit(),
+      selectSector,
+    });
+    const overview = SBDashboard.create({
+      data: D,
+      openMap(id) {
+        $("#btn-workspace").click();
+        requestAnimationFrame(() => {
+          selectSector(id, { fly: false, scroll: false });
+          const layer = sectorLayer
+            .getLayers()
+            .find((item) => item.feature.properties.id === id);
+          map.fitBounds(layer ? layer.getBounds() : fullBounds(), {
+            padding: [35, 35],
+            maxZoom: 12,
+            animate: false,
+          });
+          $(".map-area").scrollIntoView({
+            behavior: motionAllowed() ? "smooth" : "auto",
+            block: "start",
+          });
+          $("#map").focus({ preventScroll: true });
+        });
+      },
+    });
     SBJourney.create({
       data: D,
+      overview,
       scene(options) {
         if (options.imagery) {
           S.imagery = options.imagery;

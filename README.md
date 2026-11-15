@@ -16,6 +16,7 @@ SAR-BRIDGE AI compares two real NISAR L-band radar observations of the Mingachev
 | AI analysis card | For the whole area or a selected sector: (1) detected change, (2) AI interpretation and ranked hypotheses, (3) supporting evidence, (4) missing evidence, (5) conclusion: *Supported hypothesis*, *Plausible but unconfirmed* or *Insufficient evidence* |
 | Methodology & data | Granule IDs, acquisition times, polarisations, the full NISAR acquisition inventory, processing steps, thresholds, evidence rules, sources, limitations |
 | Review & validation | Separate engine and human statuses; a local, version-linked review history with rationale, evidence reference and next action; import/export; pixel-exact Sentinel-2 proxy confusion counts and class-specific metrics |
+| Dashboard | Reservoir overview, loss-sorted sector comparison with a significant-change filter, independent optical metrics, separate engine counts and current-package local review coverage; direct map/review actions |
 
 ## Results: 25 June → 11 October 2026
 
@@ -75,6 +76,8 @@ Select a sector through the map labels, chart or analysis-area selector. The map
 This is explicitly a **local browser demo**: names and evidence references are self-reported, identities are not verified, and no requests are sent to operators or agencies. It has no authenticated multi-user review server. Older-package records remain in history but do not apply to a new package. Corrupt imports and storage failures do not overwrite existing records or display a false save success.
 
 ### Frontend / processing contract
+
+**Dashboard** is a separate overview at `/?view=dashboard`. Its four summary values are measured radar loss, sectors meeting the existing significant-change rule, sectors with any current-package local review, and valid radar coverage. A recorded review counts a sector once regardless of outcome; it is not scientific approval. The changed-sector filter affects the table while engine totals remain labelled for all sectors. Review saves/imports refresh the overview; inaccessible local storage shows unknown coverage. Each row opens the actual map sector or its review form. The reservoir-report button exports the whole-area report.
 
 The Mission / paper design uses a dark entry panel beside the real interactive optical map, an open observation-provenance band and the three-step investigation rail. Analysis stays on white surfaces with amber actions and terracotta/slate change classes. Possible explanations open on demand; the workspace's human-review actions remain in a fixed footer while the evidence inspector scrolls. The layout adapts from a desktop split to a mobile stack, and reduced-motion preferences disable the panel entrance and automatic divider reveal. See `docs/design-direction.md` for the visual system.
 

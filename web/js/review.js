@@ -196,6 +196,7 @@ window.SBReview = (() => {
           node.className = `human-state ${latest(unit)?.outcome || "pending"}`;
         }
       });
+      document.dispatchEvent(new Event("sar:review-updated"));
     }
     function open({ unit = activeUnit(), view = "review" } = {}) {
       selected = unitKey(unit);
@@ -220,7 +221,13 @@ window.SBReview = (() => {
       $("#workspace").inert = false;
       $(".topbar").inert = false;
       document.body.style.overflow = "";
+      const replacement = opener?.dataset.focusKey
+        ? [...document.querySelectorAll("[data-focus-key]")].find(
+            (node) => node.dataset.focusKey === opener.dataset.focusKey,
+          )
+        : null;
       if (opener?.isConnected && opener.getClientRects().length) opener.focus();
+      else if (replacement) replacement.focus();
       else $("#btn-review").focus();
     }
     $("#btn-review").disabled = false;
