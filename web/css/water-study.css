@@ -421,6 +421,44 @@
   margin-top: 10px;
   font-size: 10px;
 }
+.water-review-history {
+  border-top: 1px solid #e0e6db;
+  margin-top: 15px;
+  padding-top: 6px;
+}
+.water-review-history article {
+  margin: 12px 0;
+  padding: 13px;
+  background: #f5f8f1;
+  border: 1px solid #e0e7d8;
+  border-radius: 3px;
+}
+.water-review-history article > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 12px;
+  align-items: baseline;
+}
+.water-review-history article strong {
+  font-size: 11px;
+  font-weight: 600;
+}
+.water-review-history article span {
+  font-size: 9px;
+  color: #526d48;
+}
+.water-review-history article p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 9px 0 7px;
+}
+.water-review-history .water-review-storage-error {
+  color: #805526;
+  background: #fff6e8;
+  padding: 12px;
+  margin-top: 10px;
+}
 .water-study-loading,
 .water-study-error {
   grid-column: 1/-1;

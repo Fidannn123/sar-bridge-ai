@@ -60,6 +60,8 @@ window.SBWaterStudy = (() => {
       !study.sectors.length ||
       new Set(study.sectors.map((s) => s.id)).size !== study.sectors.length ||
       study.sector_geojson?.features?.length !== study.sectors.length ||
+      new Set(study.sector_geojson.features.map((f) => f.properties.id))
+        .size !== study.sectors.length ||
       study.sector_geojson.features.some(
         (f) => !study.sectors.some((s) => s.id === f.properties.id),
       )
@@ -79,6 +81,15 @@ window.SBWaterStudy = (() => {
         ].every((key) => Number.isFinite(unit[key]) && unit[key] >= 0) ||
         unit.valid_fraction > 1 ||
         unit.valid_area_ha > unit.zone_area_ha + 0.02 ||
+        unit.water_before_ha > unit.valid_area_ha + 0.02 ||
+        unit.water_after_ha > unit.valid_area_ha + 0.02 ||
+        unit.loss_ha > unit.water_before_ha + 0.02 ||
+        unit.gain_ha > unit.water_after_ha + 0.02 ||
+        (unit.zone_area_ha > 0 &&
+          Math.abs(
+            unit.valid_fraction - unit.valid_area_ha / unit.zone_area_ha,
+          ) >
+            0.02 / unit.zone_area_ha + 0.000001) ||
         Math.abs(
           unit.water_after_ha -
             unit.water_before_ha -
@@ -210,8 +221,32 @@ window.SBWaterStudy = (() => {
       sectors,
       sectorLabels,
       selectedLayer,
+      fetchController,
       busy = false;
     const cache = new Map();
+    const drafts = new Map();
+    let reviewStore, reviewStorageError;
+    try {
+      reviewStore = SBWaterReviews.create({ storage: window.localStorage });
+    } catch {
+      reviewStorageError = "Review storage is unavailable in this browser.";
+    }
+    function reviewState() {
+      try {
+        if (!reviewStore) throw new Error(reviewStorageError);
+        return { records: reviewStore.read(study, selected), error: null };
+      } catch (error) {
+        return { records: [], error: error.message };
+      }
+    }
+    function saveDraft() {
+      const form = $("#water-review-form");
+      if (!study || !form) return;
+      drafts.set(SBWaterReviews.keyFor(study, selected), {
+        fields: Object.fromEntries(new FormData(form)),
+        open: form.closest("details").open,
+      });
+    }
     function setURL(active) {
       const url = new URL(location.href);
       if (active) url.searchParams.set("analysis", "1");
@@ -238,7 +273,10 @@ window.SBWaterStudy = (() => {
       sectors = sectorLabels = selectedLayer = null;
     }
     function close({ updateURL = true } = {}) {
+      saveDraft();
       revision++;
+      fetchController?.abort();
+      fetchController = null;
       clearLayers();
       study = null;
       busy = false;
@@ -295,9 +333,50 @@ window.SBWaterStudy = (() => {
         ),
       );
       $("#water-review-form").addEventListener("submit", saveReview);
+      const form = $("#water-review-form");
+      const draft = drafts.get(SBWaterReviews.keyFor(study, selected));
+      if (draft) {
+        for (const [name, value] of Object.entries(draft.fields)) {
+          const control = form.elements.namedItem(name);
+          if (control) control.value = value;
+        }
+        form.closest("details").open = draft.open;
+      }
+      const history = document.createElement("div");
+      history.id = "water-review-history";
+      history.className = "water-review-history";
+      $("#water-review-message").after(history);
+      renderReviewHistory();
+    }
+    function renderReviewHistory() {
+      const state = reviewState(),
+        history = $("#water-review-history");
+      const form = $("#water-review-form"),
+        disclosure = form.closest("details");
+      disclosure.querySelector("summary").textContent =
+        `Human review · ${state.error ? "storage unavailable" : state.records.length ? `${state.records.length} recorded` : "pending"}`;
+      form.querySelector('button[type="submit"]').disabled = Boolean(
+        state.error,
+      );
+      if (state.error) {
+        history.innerHTML = `<p class="water-review-storage-error" role="alert">${esc(state.error)} Existing records were not overwritten.</p>`;
+        return;
+      }
+      history.innerHTML = `<h4>Review history</h4>${
+        state.records.length
+          ? [...state.records]
+              .reverse()
+              .map(
+                (record) =>
+                  `<article><div><strong>${esc(record.reviewer)}</strong><span>${esc(SBWaterReviews.outcomes[record.outcome])}</span></div><p>${esc(record.rationale)}</p><small>${esc(new Date(record.created_utc).toLocaleString("en-GB", { timeZone: "Asia/Baku", dateStyle: "medium", timeStyle: "short" }))} Baku</small></article>`,
+              )
+              .join("")
+          : "<p>No reviews recorded for this area and data version.</p>"
+      }`;
     }
     function select(id) {
       if (id !== null && !study.sectors.some((s) => s.id === id)) return;
+      saveDraft();
       selected = id;
       const map = getMap();
       if (selectedLayer) map.removeLayer(selectedLayer);
@@ -326,24 +405,12 @@ window.SBWaterStudy = (() => {
       const message = $("#water-review-message");
       const fields = Object.fromEntries(new FormData(event.currentTarget));
       try {
-        const key = `sar-bridge:optical-review:${study.id}:${study.package_id}:${selected === null ? "whole" : selected}`;
-        const raw = localStorage.getItem(key),
-          entries = raw === null ? [] : JSON.parse(raw);
-        if (!Array.isArray(entries))
-          throw new Error(
-            "Existing review data is unreadable; it was not overwritten.",
-          );
-        const record = {
-          ...fields,
-          study_id: study.id,
-          sector_id: selected,
-          package_id: study.package_id,
-          created_utc: new Date().toISOString(),
-          source: "local_self_reported",
-        };
-        localStorage.setItem(key, JSON.stringify([...entries, record]));
+        if (!reviewStore) throw new Error(reviewStorageError);
+        reviewStore.save(study, selected, fields);
+        drafts.delete(SBWaterReviews.keyFor(study, selected));
         message.textContent = `Review saved in this browser for ${selected === null ? "the whole study area" : scope().name}.`;
         event.currentTarget.reset();
+        renderReviewHistory();
       } catch (error) {
         message.textContent = `Review could not be saved. ${error.message}`;
       }
@@ -357,15 +424,28 @@ window.SBWaterStudy = (() => {
       try {
         let result = cache.get(entry.id);
         if (!result) {
-          const response = await fetch(entry.analysis_url, {
-            cache: "no-cache",
-          });
-          if (!response.ok)
-            throw new Error(
-              `Study data unavailable (HTTP ${response.status}).`,
+          const controller = new AbortController();
+          fetchController = controller;
+          const timeout = setTimeout(() => controller.abort(), 30000);
+          try {
+            const response = await fetch(entry.analysis_url, {
+              cache: "no-cache",
+              signal: controller.signal,
+            });
+            if (!response.ok)
+              throw new Error(
+                `Study data unavailable (HTTP ${response.status}).`,
+              );
+            result = validate(
+              await response.json(),
+              entry.id,
+              entry.package_id,
             );
-          result = validate(await response.json(), entry.id, entry.package_id);
-          cache.set(entry.id, result);
+            cache.set(entry.id, result);
+          } finally {
+            clearTimeout(timeout);
+            if (fetchController === controller) fetchController = null;
+          }
         }
         if (ticket !== revision) return;
         study = result;
@@ -392,7 +472,7 @@ window.SBWaterStudy = (() => {
         );
         imageLayers.forEach((layer) =>
           layer.on("error", () => {
-            if (study) {
+            if (ticket === revision && study) {
               const node = ui.querySelector(".water-study-image-status");
               if (node)
                 node.textContent =
@@ -462,7 +542,11 @@ window.SBWaterStudy = (() => {
       } catch (error) {
         if (ticket !== revision) return;
         busy = false;
-        detail.innerHTML = `<div class="water-study-error" role="alert"><h2>Investigation unavailable</h2><p>${esc(error.message)}</p><button type="button" class="btn" data-water-action="retry">Retry study</button><button type="button" class="journey-text-button" data-water-action="close">Return to satellite context</button></div>`;
+        const message =
+          error.name === "AbortError"
+            ? "The study request timed out. Check the connection and retry."
+            : error.message;
+        detail.innerHTML = `<div class="water-study-error" role="alert"><h2>Investigation unavailable</h2><p>${esc(message)}</p><button type="button" class="btn" data-water-action="retry">Retry study</button><button type="button" class="journey-text-button" data-water-action="close">Return to satellite context</button></div>`;
         detail
           .querySelector('[data-water-action="retry"]')
           .addEventListener("click", () => open(entry));
@@ -478,7 +562,11 @@ window.SBWaterStudy = (() => {
         onClose();
       }
       if (action === "export" && study) {
-        const blob = new Blob([markdown(study, selected)], {
+        const reviews = reviewState();
+        const reviewText = reviews.error
+          ? `\n\n## Human review\n\nReview records unavailable: ${reviews.error}\n`
+          : SBWaterReviews.markdown(reviews.records);
+        const blob = new Blob([markdown(study, selected) + reviewText], {
             type: "text/markdown;charset=utf-8",
           }),
           url = URL.createObjectURL(blob),

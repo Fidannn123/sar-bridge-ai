@@ -43,6 +43,18 @@ test("mismatched location, stale package, invalid dates and inconsistent water t
     (d) => (d.observations.after.start_date = d.observations.before.start_date),
     (d) => (d.assets.after = "data/img/s2_after.webp"),
     (d) => (d.sector_geojson.features[0].properties.id = 99),
+    (d) =>
+      (d.sector_geojson.features[1].properties.id =
+        d.sector_geojson.features[0].properties.id),
+    (d) => {
+      d.totals.water_before_ha += d.totals.valid_area_ha;
+      d.totals.water_after_ha += d.totals.valid_area_ha;
+      for (const sector of d.sectors) {
+        sector.water_before_ha += sector.valid_area_ha;
+        sector.water_after_ha += sector.valid_area_ha;
+      }
+    },
+    (d) => (d.totals.valid_fraction = 0.5),
   ]) {
     const bad = JSON.parse(JSON.stringify(s));
     mutate(bad);

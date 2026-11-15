@@ -44,7 +44,7 @@ Shamkir, Araz, Sevan, Enguri, Mead, Powell, Nasser and Atatürk have checked-in 
 
 `pipeline/10_water_studies.py` retrieves the actual water outline from OpenStreetMap through Nominatim, selects June/October 2026 scenes from Element 84 Earth Search using **cloud-free coverage inside the water body's analysis zone**, and mosaics scenes within a maximum seven-day acquisition window. The scene IDs, exact timestamps, reflectance-offset handling and source links are retained. Measurements use NDWI > 0, Sen2Cor cloud/shadow/snow exclusions and a 1 ha minimum water patch. Both-date validity is required for every reported change. The domain is the mapped water outline plus 750 m; grid size adapts from 20 m upwards for larger water bodies and is stated on screen. These are optical water-surface-area comparisons, not NISAR detections, water-volume estimates, causation assessments or independently validated performance scores.
 
-The static app serves the derived imagery and measurements without API keys or live processing. The comparison slider, change/sector toggles, map labels, ten-sector chart and selector stay synchronized. Reports include the selected area, measurements, method, original scenes and limitations. Reviews are local and tied to the study, sector and package ID; they do not authenticate identities. Arbitrary custom coordinates remain geographic context until a study is processed for them.
+The static app serves the derived imagery and measurements without API keys or live processing. The comparison slider, change/sector toggles, map labels, ten-sector chart and selector stay synchronized. Reports include the selected area, measurements, method, original scenes and limitations. Reviews are local and tied to the study, sector and package ID; they do not authenticate identities. Review history survives reload and is included in the selected area's report. Unfinished drafts are retained while moving between sectors or water bodies during the current session. Blocked, corrupted or full browser storage never produces a false save confirmation or overwrites existing records. Switching away cancels a pending study request, and requests that time out offer a retry. Arbitrary custom coordinates remain geographic context until a study is processed for them.
 
 Reproduce the optical packages separately from the original radar pipeline:
 
@@ -52,7 +52,7 @@ Reproduce the optical packages separately from the original radar pipeline:
 python -m pip install numpy rasterio pyproj shapely scipy pillow requests
 python pipeline/10_water_studies.py --year 2026 --workers 2
 python pipeline/test_water_studies.py
-node --test scripts/test-water-studies.mjs
+node --test scripts/test-water-studies.mjs scripts/test-water-reviews.mjs
 node scripts/validate-static.mjs
 ```
 
