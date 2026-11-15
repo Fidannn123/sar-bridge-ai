@@ -69,7 +69,13 @@ window.SBJourney = (() => {
       url.searchParams.set("view", view);
       if (["dashboard", "home", "atlas", "demo"].includes(view)) url.hash = "";
       if (view !== "atlas") {
-        for (const key of ["reservoir", "lat", "lng"])
+        for (const key of [
+          "reservoir",
+          "lat",
+          "lng",
+          "analysis",
+          "water-sector",
+        ])
           url.searchParams.delete(key);
       }
       history.replaceState(null, "", url.pathname + url.search + url.hash);
@@ -84,6 +90,7 @@ window.SBJourney = (() => {
     }
     function setMode(value) {
       mode = value;
+      document.dispatchEvent(new CustomEvent("sar:experience-changed", { detail: value }));
       document.body.dataset.experience =
         value === "guided" ? ["observe", "compare", "explain"][step] : value;
       const demoActive = value === "intro" || value === "guided";

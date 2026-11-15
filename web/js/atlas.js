@@ -114,6 +114,38 @@ window.SBAtlas = (() => {
       selected = places[0],
       timer;
     const markers = new Map();
+    const studies = new Map();
+    const studyUI = SBWaterStudy.create({
+      getMap: () => map,
+      onClose: () => renderDetail(),
+    });
+    document.addEventListener("sar:experience-changed", (event) => {
+      if (event.detail !== "atlas") studyUI.close({ updateURL: false });
+    });
+    const catalogReady = fetch("data/water-studies/index.json", {
+      cache: "no-cache",
+    })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Water-study catalog unavailable.");
+        const index = await response.json();
+        if (index.schema_version !== 1 || !Array.isArray(index.studies))
+          throw new Error("Invalid water-study catalog.");
+        for (const entry of index.studies) {
+          if (
+            places.some((place) => place.id === entry.id) &&
+            entry.analysis_url ===
+              `data/water-studies/${entry.id}/analysis.json` &&
+            /^[a-f0-9]{64}$/.test(entry.package_id)
+          )
+            studies.set(entry.id, entry);
+        }
+        renderList();
+        if (!studyUI.active()) renderDetail();
+      })
+      .catch(() => {
+        $("#atlas-count").textContent =
+          "Optical study catalog unavailable. Satellite context remains available.";
+      });
     const reduced = () =>
       matchMedia("(prefers-reduced-motion: reduce)").matches;
     function reference(place) {
@@ -129,12 +161,12 @@ window.SBAtlas = (() => {
             .includes(query),
       );
       $("#atlas-count").textContent =
-        `${filtered.length} ${filtered.length === 1 ? "place" : "places"} · 1 radar study in the atlas`;
+        `${filtered.length} ${filtered.length === 1 ? "place" : "places"} · 1 radar + ${studies.size} optical studies`;
       $("#atlas-list").innerHTML = filtered.length
         ? filtered
             .map(
               (place) =>
-                `<button class="atlas-place" type="button" data-place="${place.id}" aria-pressed="${place.id === selected.id}"><span class="atlas-place-head"><strong>${place.name}</strong><span aria-hidden="true">↗</span></span><span>${place.country} <i>·</i> ${place.type}</span><small class="${place.study ? "study-ready" : "preview-only"}">${place.study ? "Radar study available" : "Satellite preview"}</small></button>`,
+                `<button class="atlas-place" type="button" data-place="${place.id}" aria-pressed="${place.id === selected.id}"><span class="atlas-place-head"><strong>${place.name}</strong><span aria-hidden="true">↗</span></span><span>${place.country} <i>·</i> ${place.type}</span><small class="${place.study || studies.has(place.id) ? "study-ready" : "preview-only"}">${place.study ? "Radar study available" : studies.has(place.id) ? "Optical analysis available" : "Satellite preview"}</small></button>`,
             )
             .join("")
         : '<p class="atlas-empty">No matching places. Try another name or explore a location by coordinates below.</p>';
@@ -146,13 +178,22 @@ window.SBAtlas = (() => {
     }
     function renderDetail() {
       const place = selected;
+      const entry = studies.get(place.id);
       $("#atlas-detail").innerHTML =
-        `<div><p class="eyebrow">${place.study ? "RADAR CASE STUDY AVAILABLE" : "GEOGRAPHIC EXPLORATION"}</p><h2>${esc(place.name)}</h2><p>${esc(place.country)} <span class="slash">/</span> ${esc(place.type)}</p><p class="atlas-place-description">${esc(place.note)}</p></div><div class="atlas-detail-action">${place.study ? `<span class="atlas-ready"><span class="status-dot"></span> NISAR + Sentinel-2 + ERA5</span><button class="journey-primary" type="button" data-atlas-case>Open radar investigation <span aria-hidden="true">→</span></button><small>${data.stats.pair.before.date} → ${data.stats.pair.after.date}</small>` : `<span class="atlas-preview-status">Satellite preview · analysis not run</span><p>A radar change study needs a matching observation pair, processing and an independent check for this location.</p>`}<a href="${reference(place)}" target="_blank" rel="noopener noreferrer">View reference map ↗</a></div>`;
+        `<div><p class="eyebrow">${place.study ? "RADAR CASE STUDY AVAILABLE" : entry ? "OPTICAL ANALYSIS AVAILABLE" : "GEOGRAPHIC EXPLORATION"}</p><h2>${esc(place.name)}</h2><p>${esc(place.country)} <span class="slash">/</span> ${esc(place.type)}</p><p class="atlas-place-description">${esc(place.note)}</p></div><div class="atlas-detail-action">${place.study ? `<span class="atlas-ready"><span class="status-dot"></span> NISAR + Sentinel-2 + ERA5</span><button class="journey-primary" type="button" data-atlas-case>Open radar investigation <span aria-hidden="true">→</span></button><small>${data.stats.pair.before.date} → ${data.stats.pair.after.date}</small>` : entry ? `<span class="atlas-ready"><span class="status-dot"></span> Sentinel-2 water-change study · ${entry.grid_m} m</span><button class="journey-primary" type="button" data-atlas-analysis>Open optical investigation <span aria-hidden="true">→</span></button><small>${esc(entry.dates.before.start_date)} → ${esc(entry.dates.after.end_date)}</small><p>Real before/after observations, mapped water gain and loss, sector measurements and source-linked evidence.</p>` : `<span class="atlas-preview-status">Satellite preview · analysis not run</span><p>A water-change study needs a matching observation pair and processing for this location.</p>`}<a href="${reference(place)}" target="_blank" rel="noopener noreferrer">View reference map ↗</a></div>`;
       $("#atlas-fallback").href = reference(place);
     }
-    function choose(id, { animate = true } = {}) {
+    function choose(id, { animate = true, analyze = false } = {}) {
+      studyUI.close({ updateURL: !analyze });
       selected = places.find((place) => place.id === id) || places[0];
       updateView(animate);
+      if (analyze) {
+        const requested = selected.id;
+        catalogReady.then(() => {
+          if (selected.id === requested && studies.has(requested))
+            studyUI.open(studies.get(requested));
+        });
+      }
     }
     function updateView(animate) {
       map.stop();
@@ -238,6 +279,7 @@ window.SBAtlas = (() => {
             Math.abs(lng) <= 180
           ) {
             selected = customPlace(lat, lng);
+            studyUI.close();
             updateView(false);
             return;
           }
@@ -246,8 +288,11 @@ window.SBAtlas = (() => {
           region = "all";
           $("#atlas-search").value = "";
           syncFilters();
-          choose(id || url.searchParams.get("reservoir"), { animate: false });
-        } else updateView(false);
+          choose(id || url.searchParams.get("reservoir"), {
+            animate: false,
+            analyze: url.searchParams.get("analysis") === "1",
+          });
+        } else { studyUI.close(); updateView(false); }
       });
     }
     function customPlace(lat, lng) {
@@ -285,9 +330,16 @@ window.SBAtlas = (() => {
     );
     $("#atlas-detail").addEventListener("click", (event) => {
       if (event.target.closest("[data-atlas-case]")) onCase();
+      if (
+        event.target.closest("[data-atlas-analysis]") &&
+        studies.has(selected.id)
+      )
+        studyUI.open(studies.get(selected.id));
     });
     $("#atlas-fit").addEventListener("click", () =>
-      map.setView(selected.center, selected.zoom, { animate: !reduced() }),
+      studyUI.active()
+        ? studyUI.fit()
+        : map.setView(selected.center, selected.zoom, { animate: !reduced() }),
     );
     $("#atlas-retry").addEventListener("click", () => {
       $("#atlas-map-notice").hidden = true;
@@ -297,6 +349,7 @@ window.SBAtlas = (() => {
       event.preventDefault();
       const form = event.currentTarget;
       if (!form.reportValidity()) return;
+      studyUI.close();
       selected = customPlace(
         Number(form.elements.latitude.value),
         Number(form.elements.longitude.value),

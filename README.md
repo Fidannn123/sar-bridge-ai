@@ -2,7 +2,7 @@
 
 **A satellite water atlas with AI-assisted interpretation of NASA–ISRO NISAR radar change detection. First complete case study: Mingachevir Reservoir, Azerbaijan.**
 
-The entry page introduces the broader water-observation workflow. **Water atlas** opens nine lakes and reservoirs across the Caucasus and the world, with name/country search, region filters and custom-coordinate exploration. Esri satellite imagery supplies geographic context; image dates vary. Only Mingachevir has a processed radar study. Other locations explicitly show **Satellite preview · analysis not run** and never inherit its measurements, dates or validation scores. Atlas selections and custom coordinates can be shared through the URL.
+The entry page introduces the broader water-observation workflow. **Water atlas** opens nine lakes and reservoirs across the Caucasus and the world, with name/country search, region filters and custom-coordinate exploration. Mingachevir has the original **NISAR radar investigation**. The other eight destinations have independent, dated **Sentinel-2 optical water-change investigations**, each with its own imagery, measurements, ten sectors, acquisition provenance, report export and local review form. The Esri basemap remains geographic context; actual study images use the dated Copernicus observations listed in each report. Locations never inherit Mingachevir measurements or evaluation scores. Atlas and analysis selections can be shared through the URL.
 
 SAR-BRIDGE AI compares two real NISAR L-band radar observations of the Mingachevir Reservoir, maps where water appeared or disappeared, and then investigates *why*. A transparent, rule-based evidence engine weighs several candidate explanations (water-level change, seasonal drawdown, hydropower release, wind, soil moisture, vegetation, calibration artefacts) against the radar data, an independent Sentinel-2 optical check and ERA5 weather reanalysis. An LLM then turns the structured result into plain language.
 
@@ -12,7 +12,7 @@ SAR-BRIDGE AI compares two real NISAR L-band radar observations of the Mingachev
 
 | Panel | Content |
 |---|---|
-| Overview & water atlas | Editorial landing page; nine geographic destinations; search, region filters and custom coordinates; clear distinction between satellite preview and processed radar study |
+| Overview & water atlas | Nine active destinations: one radar and eight optical investigations; dated before/after imagery, water gain/loss, ten selectable sectors, source-linked explanations, report export and local human reviews; search, region filters and custom-coordinate context |
 | Map | NISAR HH / HV backscatter for both dates with a draggable before/after slider labelled with the acquisition dates (Sentinel-2 true colour as an optional alternative), detected water gain/loss, insufficient-data areas, 10 clickable sectors, and a γ⁰ backscatter scale in the legend |
 | Sector chart | Water gained (up) and lost (down) in each sector, from the NW inflow end to the SE dam; click a column to open that sector |
 | Change statistics | Total water gain and loss (ha), sectors analysed, valid-data coverage, same-day NISAR vs Sentinel-2 agreement |
@@ -37,6 +37,26 @@ The radar highlights wide transitions in the shallow NW, while optical change al
 **Independent change comparison:** on 2,091,430 common-valid 20 m pixels, loss precision is **0.194**, recall **0.105**, F1 **0.136** and IoU **0.073** against the Sentinel-2 proxy. In Sector 03, loss F1 is **0.210**. These low overlaps require investigation; the 86.5% after-date water-mask agreement is **not change accuracy**. Gain precision is undefined because radar predicts no gain; gain F1 is zero because the optical proxy contains gain. No field-labelled ground truth has been used. The exact counts, dates, formulas and exclusions appear in the Validation tab and `web/data/validation.json`.
 
 ## Data
+
+### Eight additional water investigations
+
+Shamkir, Araz, Sevan, Enguri, Mead, Powell, Nasser and Atatürk have checked-in Sentinel-2 L2A analyses under `web/data/water-studies/`. Open a place and choose **Open optical investigation**, or use `/?view=atlas&reservoir=mead&analysis=1`. Sector deep links append `&water-sector=6`. Each result is independent of the Mingachevir radar package and the team-reported project evaluation.
+
+`pipeline/10_water_studies.py` retrieves the actual water outline from OpenStreetMap through Nominatim, selects June/October 2026 scenes from Element 84 Earth Search using **cloud-free coverage inside the water body's analysis zone**, and mosaics scenes within a maximum seven-day acquisition window. The scene IDs, exact timestamps, reflectance-offset handling and source links are retained. Measurements use NDWI > 0, Sen2Cor cloud/shadow/snow exclusions and a 1 ha minimum water patch. Both-date validity is required for every reported change. The domain is the mapped water outline plus 750 m; grid size adapts from 20 m upwards for larger water bodies and is stated on screen. These are optical water-surface-area comparisons, not NISAR detections, water-volume estimates, causation assessments or independently validated performance scores.
+
+The static app serves the derived imagery and measurements without API keys or live processing. The comparison slider, change/sector toggles, map labels, ten-sector chart and selector stay synchronized. Reports include the selected area, measurements, method, original scenes and limitations. Reviews are local and tied to the study, sector and package ID; they do not authenticate identities. Arbitrary custom coordinates remain geographic context until a study is processed for them.
+
+Reproduce the optical packages separately from the original radar pipeline:
+
+```powershell
+python -m pip install numpy rasterio pyproj shapely scipy pillow requests
+python pipeline/10_water_studies.py --year 2026 --workers 2
+python pipeline/test_water_studies.py
+node --test scripts/test-water-studies.mjs
+node scripts/validate-static.mjs
+```
+
+Raw search responses, water outlines and coarse cloud-coverage caches remain in ignored `data/interim/water-studies/`. Only derived WebP images and source-linked JSON manifests are published. The deploy gate rejects missing investigations, mixed package IDs, invalid water-area totals, mismatched sectors and imagery that fails its SHA-256 hash check.
 
 | Dataset | Use | Access |
 |---|---|---|

@@ -4,6 +4,7 @@ import { resolve, relative, isAbsolute, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import vm from "node:vm";
 import { createHash } from "node:crypto";
+import { validateWaterStudies } from "./validate-water-studies.mjs";
 
 const web = resolve(
   process.argv[2] || fileURLToPath(new URL("../web/", import.meta.url)),
@@ -77,8 +78,12 @@ try {
       throw new Error(`Invalid imagery bounds: ${key}`);
     }
   }
+  const opticalStudies = validateWaterStudies(web);
   console.log(
     `Static deploy ready: ${data.stats.n_sectors} sectors, ${Object.keys(data.layers).length} image layers; all entry-point assets and JavaScript syntax checked.`,
+  );
+  console.log(
+    `Optical atlas ready: ${opticalStudies} source-linked water studies; imagery hashes and measurements checked.`,
   );
 } catch (error) {
   console.error(`Static deploy rejected: ${error.message}`);

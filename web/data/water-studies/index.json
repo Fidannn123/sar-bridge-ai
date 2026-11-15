@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "studies": [
+    {
+      "id": "shamkir",
+      "name": "Shamkir Reservoir",
+      "sensor": "Sentinel-2 L2A",
+      "analysis_url": "data/water-studies/shamkir/analysis.json",
+      "package_id": "34204f83bf691e0210a84e3cc31c8b4ab464a00d57b1ffe79294d9820435e995",
+      "grid_m": 20,
+      "dates": {
+        "before": {
+          "start_date": "2026-06-16",
+          "end_date": "2026-06-16"
+        },
+        "after": {
+          "start_date": "2026-10-04",
+          "end_date": "2026-10-04"
+        }
+      }
+    },
+    {
+      "id": "araz",
+      "name": "Araz Reservoir",
+      "sensor": "Sentinel-2 L2A",
+      "analysis_url": "data/water-studies/araz/analysis.json",
+      "package_id": "3b255a3021fa758a4e4baa4bcacbd15c810a0e6d1954b246c070cef7d73e3b9d",
+      "grid_m": 20,
+      "dates": {
+        "before": {
+          "start_date": "2026-06-16",
+          "end_date": "2026-06-19"
+        },
+        "after": {
+          "start_date": "2026-10-22",
+          "end_date": "2026-10-22"
+        }
+      }
+    },
+    {
+      "id": "sevan",
+      "name": "Lake Sevan",
+      "sensor": "Sentinel-2 L2A",
+      "analysis_url": "data/water-studies/sevan/analysis.json",
+      "package_id": "a8041ef2e11b8abd224c2f98d77f8951eb90a37fcc98b5dc5b3016c82361c733",
+      "grid_m": 40,
+      "dates": {
+        "before": {
+          "start_date": "2026-06-16",
+          "end_date": "2026-06-19"
+        },
+        "after": {
+          "start_date": "2026-10-12",
+          "end_date": "2026-10-14"
+        }
+      }
+    },
+    {
+      "id": "enguri",
+      "name": "Enguri Reservoir",
+      "sensor": "Sentinel-2 L2A",
+      "analysis_url": "data/water-studies/enguri/analysis.json",
+      "package_id": "0d8f6e1a835de0910733751237dc15485b309a59faa224712e4e7ac4283fe02a",
+      "grid_m": 20,
+      "dates": {
+        "before": {
+          "start_date": "2026-06-17",
+          "end_date": "2026-06-17"
+        },
+        "after": {
+          "start_date": "2026-10-10",
+          "end_date": "2026-10-10"
+        }
+      }
+    },
+    {
+      "id": "mead",
+      "name": "Lake Mead",
+      "sensor": "Sentinel-2 L2A",
+      "analysis_url": "data/water-studies/mead/analysis.json",
+      "package_id": "e02aacde3d6ac4b4f2833eb925a52c66bb95ff34d2838e2e7e6928ca1837e2ee",
+      "grid_m": 60,
+      "dates": {
+        "before": {
+          "start_date": "2026-06-25",
+          "end_date": "2026-06-28"
+        },
+        "after": {
+          "start_date": "2026-10-01",
+          "end_date": "2026-10-03"
+        }
+      }
+    },
+    {
+      "id": "powell",
+      "name": "Lake Powell",
+      "sensor": "Sentinel-2 L2A",
+      "analysis_url": "data/water-studies/powell/analysis.json",
+      "package_id": "daef66614a0f03c9a6e4c4e30872cc9a88414d25f9906de192d39dfdf348797a",
+      "grid_m": 80,
+      "dates": {
+        "before": {
+          "start_date": "2026-06-15",
+          "end_date": "2026-06-17"
+        },
+        "after": {
+          "start_date": "2026-10-03",
+          "end_date": "2026-10-05"
+        }
+      }
+    },
+    {
+      "id": "nasser",
+      "name": "Lake Nasser",
+      "sensor": "Sentinel-2 L2A",
+      "analysis_url": "data/water-studies/nasser/analysis.json",
+      "package_id": "899f1c076412d857b8a3583b52fa6e28c40873611b286c3663df35a7554acdc6",
+      "grid_m": 140,
+      "dates": {
+        "before": {
+          "start_date": "2026-06-13",
+          "end_date": "2026-06-18"
+        },
+        "after": {
+          "start_date": "2026-10-26",
+          "end_date": "2026-10-26"
+        }
+      }
+    },
+    {
+      "id": "ataturk",
+      "name": "Atatürk Reservoir",
+      "sensor": "Sentinel-2 L2A",
+      "analysis_url": "data/water-studies/ataturk/analysis.json",
+      "package_id": "c25fecee11161bf5b6fd49c80c296bb03331e4ce5faeb27ee74006e4d10c8f85",
+      "grid_m": 80,
+      "dates": {
+        "before": {
+          "start_date": "2026-06-22",
+          "end_date": "2026-06-22"
+        },
+        "after": {
+          "start_date": "2026-10-23",
+          "end_date": "2026-10-23"
+        }
+      }
+    }
+  ]
+}
