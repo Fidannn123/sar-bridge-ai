@@ -99,6 +99,8 @@ data/context/  small provenance + supplemental datasets (committed); data/interi
 
 ## Deploy to Render
 
+Live site: **[SAR-BRIDGE AI](https://sar-bridge-ai.onrender.com)**.
+
 [Deploy to Render](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FFidannn123%2Fsar-bridge-ai)
 
 The root `render.yaml` defines a **Static Site** that publishes only `web/`. Its build command, `node scripts/validate-static.mjs`, checks the observation package, published asset paths and client JavaScript syntax without installing Python/geospatial dependencies, downloading observations or calling a language model. A failed package check prevents deployment.
@@ -115,7 +117,7 @@ Connect this repository in Render as a Blueprint, or use these settings for a ma
 
 No Earthdata or OpenAI credentials are required on Render for this version. The checked-in derived observations and reports are served as static files. To update observations, run the Python pipeline locally and commit the regenerated `web/data/` package. Commits to the linked branch automatically trigger a new deployment. The `/data/*` response header requests browser revalidation so observation files do not remain stale across releases.
 
-Validate the same deploy gate locally with `node scripts/validate-static.mjs`. The existing GitHub Pages workflow remains available independently.
+Validate the same deploy gate locally with `node scripts/validate-static.mjs`. The GitHub Pages workflow is manual-only; normal pushes to `main` deploy through Render.
 
 ## Limitations
 
