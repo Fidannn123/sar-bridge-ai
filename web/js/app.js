@@ -311,15 +311,23 @@ function applyLayers() {
   }
   $("#period-before").textContent = nice(dateOf(kb));
   $("#period-after").textContent = nice(dateOf(ka));
+  $(".period-label").textContent = `${sensor} image dates`;
   const days = Math.round(
     (Date.parse(dateOf(ka)) - Date.parse(dateOf(kb))) / 86400000,
   );
   $("#period-duration").textContent = Number.isFinite(days)
     ? `${days} days apart`
     : "";
+  const opticalOffsetDays = Math.round(
+    (Date.parse(dateOf(kb)) - Date.parse(D.stats.pair.before.date)) / 86400000,
+  );
+  const opticalTiming =
+    opticalOffsetDays === 0
+      ? "The first optical and radar images share a calendar date."
+      : `The first optical image is ${Math.abs(opticalOffsetDays)} days ${opticalOffsetDays > 0 ? "later" : "earlier"} than the first radar image.`;
   $("#imagery-note").textContent =
     S.imagery === "S2"
-      ? `Optical context: ${nice(dateOf(kb))} / ${nice(dateOf(ka))}. Change overlay and measurements use NISAR: ${D.stats.pair.before.date} / ${D.stats.pair.after.date}.`
+      ? `You are viewing optical images. The coloured change layer and hectare measurements come from radar: ${nice(D.stats.pair.before.date)} → ${nice(D.stats.pair.after.date)}. ${opticalTiming}`
       : `NISAR L-band · ${S.imagery} polarisation · ${D.stats.parameters.pixel_size_m} m grid · Provisional data${S.imagery === "HV" && !D.stats.separability.HV ? ". HV cannot reliably separate water and land in this pair." : "."}`;
   updateClip();
 }
@@ -489,7 +497,7 @@ function renderSummary() {
     <div class="stat loss">${icon("m3 5 5 5 4-3 5 8m-6 0h6V9")}<div class="k">Radar-indicated loss</div><div class="v">${num(t.loss_ha, 1)}<small>ha</small></div><div class="s">Radar-detected water → land</div></div>
     <div class="stat gain">${icon("m3 15 6-6 3 3 5-8m-6 0h6v6")}<div class="k">Radar-indicated gain</div><div class="v">${num(t.gain_ha, 1)}<small>ha</small></div><div class="s">Radar-detected land → water</div></div>
     <div class="stat">${icon("m4 10 4 4 8-9")}<div class="k">Valid radar coverage</div><div class="v">${num(100 * t.valid_fraction, 2)}<small>%</small></div><div class="s">${ha(t.insufficient_data_ha)} with insufficient data</div></div>
-    <div class="stat">${icon("m3 7 7-4 7 4-7 4-7-4Zm0 4 7 4 7-4M3 15l7 4 7-4")}<div class="k">Water-mask agreement</div><div class="v">${Number.isFinite(agreement) ? `${num(100 * agreement, 1)}<small>%</small>` : "n/a"}</div><div class="s">${Number.isFinite(agreement) ? `Not change accuracy. Same-day mask · ${nice(st.pair.after.date)}` : "Independent optical comparison unavailable"}</div></div>`;
+    <div class="stat">${icon("m3 7 7-4 7 4-7 4-7-4Zm0 4 7 4 7-4M3 15l7 4 7-4")}<div class="k">Water / land map agreement</div><div class="v">${Number.isFinite(agreement) ? `${num(100 * agreement, 1)}<small>%</small>` : "n/a"}</div><div class="s">${Number.isFinite(agreement) ? `After-date maps · includes stable areas, not change accuracy` : "Independent optical comparison unavailable"}</div></div>`;
   $("#stats").setAttribute("aria-busy", "false");
 }
 
@@ -725,8 +733,7 @@ function renderCard(unit, id) {
       "The leading explanation is consistent with some observations. Independent evidence is still needed before drawing a stronger conclusion.",
     supported:
       "Independent observations support the leading hypothesis. This is evidence of consistency, rather than proof of the underlying cause.",
-    no_change:
-      "The measured differences do not meet the evidence engine’s significance rule. No environmental cause is assigned to this sector.",
+    no_change: `The combined gain and loss is ${ha(dc.gain_ha + dc.loss_ha)}, below the ${num(D.analysis.rules.min_change_ha)} ha significance threshold. No environmental cause is assigned to this sector.`,
     not_supported:
       "The available observations point against the leading explanation. Review the evidence before interpreting this change.",
   }[c.status];
@@ -907,7 +914,9 @@ function renderMethod() {
     SBReview.create({
       data: D,
       activeUnit: () =>
-        document.body.dataset.experience === "dashboard"
+        ["dashboard", "home", "atlas"].includes(
+          document.body.dataset.experience,
+        )
           ? D.analysis.study_area
           : activeUnit(),
       selectSector,

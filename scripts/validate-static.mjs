@@ -49,6 +49,7 @@ try {
     polys: json("change_polygons.geojson"),
     osm: json("reservoir_osm.geojson"),
     validation: json("validation.json"),
+    evaluation: json("evaluation.json"),
   };
   const sandbox = { window: {} };
   vm.runInNewContext(read("js/data.js"), sandbox, {

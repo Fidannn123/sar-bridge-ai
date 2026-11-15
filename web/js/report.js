@@ -51,6 +51,19 @@ window.SBReport = (() => {
         `Text source: ${ai.source === "openai" ? `language model (${ai.model})` : "evidence-engine template"}. Numbers verified: ${ai.numbers_verified ? "yes" : "no"}.`,
         "",
       );
+    if (unit.id === undefined && data.evaluation) {
+      const reported = data.evaluation;
+      lines.push(
+        "## Team-reported project evaluation",
+        "",
+        `- F1: ${reported.f1.toFixed(2)}`,
+        `- Precision: ${(reported.precision * 100).toFixed(0)}%`,
+        `- Recall: ${(reported.recall * 100).toFixed(0)}%`,
+        "",
+        "Source: project team. Evaluation dataset and averaging method were not supplied. These reported values are separate from the archived sensor-comparison counts below and are not sector-specific results.",
+        "",
+      );
+    }
     lines.push(
       "## Independent optical-proxy comparison",
       "",

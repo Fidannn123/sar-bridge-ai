@@ -1,6 +1,8 @@
 # SAR-BRIDGE AI
 
-**AI-assisted interpretation of NASA–ISRO NISAR radar change detection at Mingachevir Reservoir, Azerbaijan.**
+**A satellite water atlas with AI-assisted interpretation of NASA–ISRO NISAR radar change detection. First complete case study: Mingachevir Reservoir, Azerbaijan.**
+
+The entry page introduces the broader water-observation workflow. **Water atlas** opens nine lakes and reservoirs across the Caucasus and the world, with name/country search, region filters and custom-coordinate exploration. Esri satellite imagery supplies geographic context; image dates vary. Only Mingachevir has a processed radar study. Other locations explicitly show **Satellite preview · analysis not run** and never inherit its measurements, dates or validation scores. Atlas selections and custom coordinates can be shared through the URL.
 
 SAR-BRIDGE AI compares two real NISAR L-band radar observations of the Mingachevir Reservoir, maps where water appeared or disappeared, and then investigates *why*. A transparent, rule-based evidence engine weighs several candidate explanations (water-level change, seasonal drawdown, hydropower release, wind, soil moisture, vegetation, calibration artefacts) against the radar data, an independent Sentinel-2 optical check and ERA5 weather reanalysis. An LLM then turns the structured result into plain language.
 
@@ -10,6 +12,7 @@ SAR-BRIDGE AI compares two real NISAR L-band radar observations of the Mingachev
 
 | Panel | Content |
 |---|---|
+| Overview & water atlas | Editorial landing page; nine geographic destinations; search, region filters and custom coordinates; clear distinction between satellite preview and processed radar study |
 | Map | NISAR HH / HV backscatter for both dates with a draggable before/after slider labelled with the acquisition dates (Sentinel-2 true colour as an optional alternative), detected water gain/loss, insufficient-data areas, 10 clickable sectors, and a γ⁰ backscatter scale in the legend |
 | Sector chart | Water gained (up) and lost (down) in each sector, from the NW inflow end to the SE dam; click a column to open that sector |
 | Change statistics | Total water gain and loss (ha), sectors analysed, valid-data coverage, same-day NISAR vs Sentinel-2 agreement |
@@ -19,6 +22,8 @@ SAR-BRIDGE AI compares two real NISAR L-band radar observations of the Mingachev
 | Dashboard | Reservoir overview, loss-sorted sector comparison with a significant-change filter, independent optical metrics, separate engine counts and current-package local review coverage; direct map/review actions |
 
 ## Results: 25 June → 11 October 2026
+
+The team supplied a project evaluation summary of **F1 0.88, precision 92%, recall 86%**. These values live in `web/data/evaluation.json` and appear in the Dashboard's **Team-reported results** card and whole-reservoir report. The evaluation dataset, exact scope, averaging method and supporting counts were not supplied. The values are retained as reported, independently of the archived pixel-exact radar/optical comparison below; no per-sector results or confusion counts are inferred from them. In particular, F1 is not recomputed from the two reported percentages because their aggregation method is unspecified.
 
 | | |
 |---|---|
@@ -65,13 +70,15 @@ The checked-in observation package is ready to explore without credentials or a 
 .venv/Scripts/python -m http.server --bind 127.0.0.1 --directory web 8000
 ```
 
-Open **http://127.0.0.1:8000**. The guided introduction starts with the measured water change and a real Sentinel-2 context image. **Explore the change** opens a presenter-paced investigation: **Observe → Compare → Explain**. The radar divider briefly demonstrates the comparison, the next step reveals the detected change, and the final step focuses on Sector 03 and its source-linked evidence chain. Arrow keys move between steps when an interactive control is not focused. **Present** toggles fullscreen where supported; reduced-motion preferences disable the automatic divider reveal and animated map travel.
+Open **http://127.0.0.1:8000** for the new overview. **Explore water atlas** opens the geographic explorer; **See the radar case study** opens the Mingachevir introduction. Direct links: `/?view=atlas&reservoir=mead` for a satellite preview, `/?view=demo` for the guided introduction. **Explore the change** starts the presenter-paced investigation: **Observe → Compare → Explain**. The radar divider briefly demonstrates the comparison, the next step reveals the detected change, and the final step focuses on Sector 03 and its source-linked evidence chain. Arrow keys move between steps when an interactive control is not focused. **Present** toggles fullscreen where supported; reduced-motion preferences disable the automatic divider reveal and animated map travel.
 
 **Workspace** skips the guide. It is also available directly at **http://127.0.0.1:8000/?view=workspace**; sector deep links continue to open the full workspace. Select **NISAR HH** to compare the radar observations themselves. The date strip always follows the visible sensor. The coloured change overlay, overview measurements and sector reports always come from the NISAR observation pair. Opening a sector manually during the guide switches to the full workspace so its controls and report match the map selection.
 
 Select a sector through the map labels, chart or analysis-area selector. The map selection, chart highlight, evidence verdict and shareable `#sector-3` URL stay in sync. **Export report** downloads the selected area's Markdown report with measured values, ranked hypotheses, evidence sources, missing observations, original granule identifiers and limitations. **Method & data** contains the processing and provenance details.
 
 **Review & validation** opens the review queue. The queue sorts changed sectors by radar loss area; it is not a hazard ranking. Add a reviewer name, review outcome, rationale and next action. Each save appends a timestamped measurement snapshot without modifying the engine verdict. Reviews survive reload on the same browser and can be exported/imported as JSON. The selected area's Markdown export includes its current-version reviews and optical comparison.
+
+The review dialog now uses a horizontal area selector and one vertical reading flow. **Sensor comparison** highlights the comparison stage, explains precision/recall/F1/IoU in plain language, and puts raw counts and formulas in an expandable technical section. Dashboard metrics retain their measured values; a low loss F1 is explained alongside the distinct after-date water-mask agreement. No analysis package or score is modified by the presentation layer.
 
 This is explicitly a **local browser demo**: names and evidence references are self-reported, identities are not verified, and no requests are sent to operators or agencies. It has no authenticated multi-user review server. Older-package records remain in history but do not apply to a new package. Corrupt imports and storage failures do not overwrite existing records or display a false save success.
 

@@ -1,5 +1,13 @@
 # SAR-BRIDGE visual system: Mission / paper
 
+## Water atlas and broader entry page
+
+The default overview now uses warm paper, deep water green and a real Sentinel-2 photograph. It introduces the wider observation workflow, then leads into the Mingachevir pilot and its measured evidence trail. The original guided case study remains available from Guided demo and `?view=demo`.
+
+`web/css/atlas.css` extends the established system for the overview, atlas, comparison explanations and review layout. The atlas lists nine real geographic destinations with search, region filters, reference-map links and custom coordinates. Its satellite basemap is context with varying acquisition dates. Only Mingachevir opens a processed radar study; all other locations explicitly identify their preview status. New locations never reuse the pilot's metrics.
+
+The review dialog uses a horizontal sector selector and a single vertical reading flow. Its workflow indicator follows the active review/comparison tab. Comparison scores retain their source values and include plain-language definitions; pixel counts, formulas and detailed provenance are expandable. Sector stability explains the actual significance rule from the analysis package. Date labels name the visible sensor, with an optical/radar date explanation below the map. Reduced-motion preferences apply throughout.
+
 The entry screen is an interactive application: an ink introduction adjoining the real optical map, followed by an open provenance band and a three-step investigation rail. The analysis workspace keeps light paper surfaces and prioritises the map, four measured statistics and a compact evidence inspector.
 
 - Palette: ink `#101c25`, paper `#ffffff`, page `#eef2f3`, amber action `#eab16e`, loss `#b76142`, gain `#527a94`. Evidence semantics retain green, amber and red.

@@ -10,6 +10,7 @@ window.SBData = (() => {
     polys: "data/change_polygons.geojson",
     osm: "data/reservoir_osm.geojson",
     validation: "data/validation.json",
+    evaluation: "data/evaluation.json",
   };
   const required = new Set([
     "layers",
@@ -18,8 +19,25 @@ window.SBData = (() => {
     "meta",
     "sectors",
     "validation",
+    "evaluation",
   ]);
   function validate(data) {
+    const evaluation = data.evaluation;
+    if (
+      evaluation?.schema_version !== 1 ||
+      evaluation.source !== "team_reported" ||
+      evaluation.scope !== "project_summary" ||
+      !["f1", "precision", "recall"].every(
+        (key) =>
+          Number.isFinite(evaluation[key]) &&
+          evaluation[key] >= 0 &&
+          evaluation[key] <= 1,
+      )
+    ) {
+      throw new Error(
+        "The team-reported evaluation summary is missing or invalid.",
+      );
+    }
     const { stats, analysis, layers, sectors, meta } = data;
     if (
       !stats?.totals ||

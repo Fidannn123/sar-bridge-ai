@@ -9,7 +9,7 @@
     <title>SAR-BRIDGE AI · Reservoir intelligence</title>
     <meta
       name="description"
-      content="Investigate water change at Mingachevir Reservoir with NISAR radar, independent observations and transparent environmental evidence."
+      content="Explore reservoirs and lakes around the world. Investigate changing shorelines with satellite observations, transparent evidence and human review."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,12 +23,13 @@
     <link rel="stylesheet" href="css/review.css" />
     <link rel="stylesheet" href="css/mission.css" />
     <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/atlas.css" />
     <link
       rel="icon"
       href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23234c3f'/><path d='M8 21a8 8 0 0 1 16 0M12 21a4 4 0 0 1 8 0' fill='none' stroke='white' stroke-width='2.4'/></svg>"
     />
   </head>
-  <body data-experience="intro">
+  <body data-experience="home">
     <a class="skip-link" href="#workspace">Skip to workspace</a>
     <header class="topbar">
       <a class="brand" href="#" aria-label="SAR-BRIDGE home"
@@ -43,7 +44,13 @@
         ><span>SAR-BRIDGE <span class="brand-ai">/ AI</span></span></a
       >
       <nav class="nav" aria-label="Main navigation">
-        <button id="btn-tour" class="active" type="button" aria-pressed="true">
+        <button id="btn-home" class="active" type="button" aria-pressed="true">
+          Overview
+        </button>
+        <button id="btn-atlas" type="button" aria-pressed="false">
+          Water atlas
+        </button>
+        <button id="btn-tour" type="button" aria-pressed="false">
           Guided demo
         </button>
         <button id="btn-dashboard" type="button" aria-pressed="false" disabled>
@@ -65,6 +72,338 @@
       >
     </header>
     <main id="workspace" class="workspace">
+      <section id="home" class="home" aria-labelledby="home-title">
+        <div class="home-hero">
+          <div class="home-copy">
+            <p class="eyebrow">
+              <span class="status-dot"></span> EARTH OBSERVATION / WATER
+              RESOURCES
+            </p>
+            <h1 id="home-title" tabindex="-1">
+              A clearer view<br />of <span>changing water.</span>
+            </h1>
+            <p class="home-lead">
+              From the Caucasus to the world. Explore our water bodies,
+              investigate shoreline change, and follow the evidence behind it.
+            </p>
+            <div class="home-actions">
+              <button
+                class="journey-primary"
+                type="button"
+                data-site-action="atlas"
+              >
+                Explore water atlas <span aria-hidden="true">↗</span></button
+              ><button
+                class="home-secondary"
+                type="button"
+                data-site-action="case"
+              >
+                See the radar case study <span aria-hidden="true">→</span>
+              </button>
+            </div>
+            <p class="home-scope">
+              Global satellite exploration.<br /><strong
+                >In-depth radar analysis starts with Mingachevir.</strong
+              >
+            </p>
+            <div class="home-index">
+              <span>01 — EXPLORE</span><span>02 — INVESTIGATE</span
+              ><span>03 — REVIEW</span>
+            </div>
+          </div>
+          <figure class="home-image">
+            <img
+              src="data/img/s2_after.webp"
+              alt="Sentinel-2 observation of the turquoise water and exposed shoreline of Mingachevir Reservoir in Azerbaijan"
+              fetchpriority="high"
+              width="2400"
+              height="1358"
+            />
+            <div class="image-topline">
+              <span class="image-tag">THE FIRST CASE STUDY</span
+              ><span class="image-coordinates">40.99° N / 47.03° E</span>
+            </div>
+            <figcaption>
+              <div>
+                <span>SENTINEL-2 · 11 OCT 2026</span
+                ><strong>Mingachevir Reservoir</strong
+                ><small>Azerbaijan · © ESA Copernicus</small>
+              </div>
+              <button
+                type="button"
+                data-site-action="case"
+                aria-label="Explore the Mingachevir case study"
+              >
+                ↗
+              </button>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="home-source-band">
+          <span>CONNECTED OBSERVATIONS</span
+          ><strong>NASA–ISRO NISAR <small>Radar</small></strong
+          ><strong>Sentinel-2 <small>Optical</small></strong
+          ><strong>ERA5 <small>Weather context</small></strong
+          ><span class="source-end"
+            >Different observations.<br />A traceable interpretation.</span
+          >
+        </div>
+        <section class="home-method" aria-labelledby="home-method-title">
+          <div class="home-section-heading">
+            <p class="eyebrow">A QUESTION, THEN THE EVIDENCE</p>
+            <h2 id="home-method-title">
+              What changed?<br />What could explain it?
+            </h2>
+            <p>
+              Built for scientists, ecologists and water managers who need to
+              see how a result was reached.
+            </p>
+          </div>
+          <ol>
+            <li>
+              <span>01</span>
+              <div>
+                <h3>Find the water.</h3>
+                <p>
+                  Browse lakes and reservoirs on a satellite map. Open the
+                  Mingachevir pilot for a complete investigation.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span>02</span>
+              <div>
+                <h3>Follow the change.</h3>
+                <p>
+                  Compare two radar dates. See water gain and loss in hectares,
+                  then cross-check against optical observations.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span>03</span>
+              <div>
+                <h3>Make an informed call.</h3>
+                <p>
+                  Inspect possible explanations and missing evidence. Record a
+                  human review with a reason and a next step.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </section>
+        <section class="home-pilot" aria-labelledby="home-pilot-title">
+          <div>
+            <p class="eyebrow">IN THE FIELD OF VIEW / AZERBAIJAN</p>
+            <h2 id="home-pilot-title">
+              One reservoir.<br />A complete evidence trail.
+            </h2>
+            <p>
+              Mingachevir ·
+              <span id="home-pair">Loading observation dates…</span>
+            </p>
+            <button
+              type="button"
+              class="journey-primary"
+              data-site-action="case"
+            >
+              Follow the investigation <span aria-hidden="true">→</span>
+            </button>
+          </div>
+          <div class="home-pilot-facts">
+            <div>
+              <strong id="home-loss">—</strong
+              ><span>hectares of radar-indicated water loss</span>
+            </div>
+            <div class="pilot-small-facts">
+              <div>
+                <strong id="home-sectors">—</strong
+                ><span>shoreline sectors</span>
+              </div>
+              <div>
+                <strong id="home-grid">—</strong><span>analysis grid</span>
+              </div>
+            </div>
+            <p>
+              Two-date research comparison. Provisional radar products; field
+              validation is still needed.
+            </p>
+          </div>
+        </section>
+        <section
+          class="home-destinations"
+          aria-labelledby="home-destinations-title"
+        >
+          <div>
+            <p class="eyebrow">BEYOND THE PILOT</p>
+            <h2 id="home-destinations-title">A wider field of view.</h2>
+            <p>
+              Explore satellite context now. Additional radar studies need their
+              own observation pairs and validation.
+            </p>
+          </div>
+          <div class="destination-list">
+            <button type="button" data-atlas-reservoir="shamkir">
+              <span>01</span
+              ><strong
+                >Shamkir Reservoir<small>Azerbaijan / Caucasus</small></strong
+              ><span aria-hidden="true">↗</span></button
+            ><button type="button" data-atlas-reservoir="sevan">
+              <span>02</span
+              ><strong>Lake Sevan<small>Armenia / Caucasus</small></strong
+              ><span aria-hidden="true">↗</span></button
+            ><button type="button" data-atlas-reservoir="mead">
+              <span>03</span
+              ><strong
+                >Lake Mead<small>United States / North America</small></strong
+              ><span aria-hidden="true">↗</span></button
+            ><button type="button" data-site-action="atlas">
+              <span>04</span
+              ><strong
+                >Explore all water bodies<small
+                  >Search the atlas or enter coordinates</small
+                ></strong
+              ><span aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </section>
+        <footer class="home-footer">
+          <span
+            >SAR-BRIDGE / AI
+            <small>Satellite evidence. Human decisions.</small></span
+          ><button
+            class="journey-text-button"
+            type="button"
+            data-site-action="method"
+          >
+            Methods, sources &amp; limitations ↗</button
+          ><span>Research prototype / NASA Space Apps</span>
+        </footer>
+      </section>
+      <section id="atlas" class="atlas" aria-labelledby="atlas-title" hidden>
+        <header class="atlas-heading">
+          <div>
+            <p class="eyebrow">WATER RESOURCES / SATELLITE ATLAS</p>
+            <h1 id="atlas-title" tabindex="-1">Choose a shoreline.</h1>
+            <p>
+              Explore the Caucasus and beyond. Each place has its own evidence.
+            </p>
+          </div>
+          <button type="button" class="btn" data-site-action="case">
+            Mingachevir radar study <span aria-hidden="true">↗</span>
+          </button>
+        </header>
+        <div class="atlas-layout">
+          <aside class="atlas-sidebar" aria-label="Find a water body">
+            <label class="atlas-search-label" for="atlas-search"
+              >Find a lake or reservoir</label
+            ><input
+              id="atlas-search"
+              type="search"
+              placeholder="Search name or country…"
+              autocomplete="off"
+            />
+            <div
+              class="atlas-filters"
+              role="group"
+              aria-label="Filter water bodies"
+            >
+              <button type="button" data-atlas-region="all" aria-pressed="true">
+                All places</button
+              ><button
+                type="button"
+                data-atlas-region="caucasus"
+                aria-pressed="false"
+              >
+                Caucasus</button
+              ><button
+                type="button"
+                data-atlas-region="world"
+                aria-pressed="false"
+              >
+                World
+              </button>
+            </div>
+            <p id="atlas-count" class="atlas-count" role="status"></p>
+            <div id="atlas-list" class="atlas-list"></div>
+            <details class="atlas-custom">
+              <summary>Explore another location</summary>
+              <form id="atlas-coordinate-form">
+                <p>
+                  Enter a latitude and longitude to explore anywhere on the map.
+                </p>
+                <label
+                  >Latitude<input
+                    name="latitude"
+                    type="number"
+                    min="-85"
+                    max="85"
+                    step="any"
+                    placeholder="40.99"
+                    required /></label
+                ><label
+                  >Longitude<input
+                    name="longitude"
+                    type="number"
+                    min="-180"
+                    max="180"
+                    step="any"
+                    placeholder="47.03"
+                    required /></label
+                ><button type="submit" class="btn">Go to coordinates ↗</button>
+              </form>
+            </details>
+          </aside>
+          <div class="atlas-map-column">
+            <div class="atlas-map-wrap">
+              <div
+                id="atlas-map"
+                aria-label="Interactive satellite map of water bodies"
+              ></div>
+              <div
+                id="atlas-map-notice"
+                class="atlas-map-notice"
+                role="status"
+                hidden
+              >
+                Satellite tiles could not load. Check your connection, then
+                retry.<button id="atlas-retry" type="button">
+                  Retry imagery</button
+                ><a
+                  id="atlas-fallback"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://www.openstreetmap.org/"
+                  >Open reference map ↗</a
+                >
+              </div>
+              <div class="atlas-map-label">
+                <span class="status-dot"></span> SATELLITE CONTEXT
+                <span>Imagery dates vary by location</span>
+              </div>
+              <button type="button" class="atlas-fit btn" id="atlas-fit">
+                Reset view ↗
+              </button>
+            </div>
+            <section
+              id="atlas-detail"
+              class="atlas-detail"
+              aria-live="polite"
+            ></section>
+          </div>
+        </div>
+        <p class="atlas-source-note">
+          Satellite basemap: © Esri, Maxar, Earthstar Geographics and the GIS
+          community. Basemap imagery is for geographic context; it is not a
+          dated radar comparison.
+          <a
+            href="https://doc.arcgis.com/en/data-appliance/2024/maps/world-imagery.htm"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Imagery source ↗</a
+          >
+        </p>
+      </section>
       <section
         id="dashboard"
         class="dashboard"
@@ -426,7 +765,7 @@
         <header class="review-sheet-head">
           <div>
             <h2 id="review-title">Human review</h2>
-            <p>Local demo · saved in this browser</p>
+            <p>Mingachevir Reservoir · local demo · saved in this browser</p>
           </div>
           <button type="button" class="btn" id="review-close">Close ×</button>
         </header>
@@ -448,7 +787,7 @@
               data-review-tab="validation"
               aria-pressed="false"
             >
-              Validation
+              Sensor comparison
             </button>
           </div>
           <label class="btn review-import-label"
@@ -483,6 +822,7 @@
     <script src="js/review.js"></script>
     <script src="js/report.js"></script>
     <script src="js/dashboard.js"></script>
+    <script src="js/atlas.js"></script>
     <script src="js/journey.js"></script>
     <script src="js/app.js"></script>
   </body>

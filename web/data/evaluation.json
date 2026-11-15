@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "source": "team_reported",
+  "scope": "project_summary",
+  "f1": 0.88,
+  "precision": 0.92,
+  "recall": 0.86,
+  "reference_dataset": null,
+  "averaging_method": null,
+  "confusion_counts": null,
+  "note": "Values supplied by the project team. Evaluation scope, dataset and averaging method have not been supplied; these values are not recomputed from the archived optical-proxy counts."
+}

@@ -138,6 +138,7 @@ const full = Object.fromEntries(
     stats: "stats.json",
     analysis: "analysis.json",
     validation: "validation.json",
+    evaluation: "evaluation.json",
     layers: "layers.json",
     meta: "meta.json",
     sectors: "sectors.geojson",
@@ -156,4 +157,39 @@ test("frontend rejects corrupted comparison counts, metrics, dates and sector ID
     mutate(bad.validation);
     assert.throws(() => browser.window.SBData.validate(bad));
   }
+});
+
+test("reported metrics use fractions and retain their stated source without rewriting sensor counts", () => {
+  assert.equal(full.evaluation.f1, 0.88);
+  assert.equal(full.evaluation.precision, 0.92);
+  assert.equal(full.evaluation.recall, 0.86);
+  const archived = JSON.stringify(full.validation);
+  browser.window.SBData.validate(full);
+  assert.equal(JSON.stringify(full.validation), archived);
+  for (const value of [92, -0.1, null]) {
+    const bad = JSON.parse(JSON.stringify(full));
+    bad.evaluation.precision = value;
+    assert.throws(
+      () => browser.window.SBData.validate(bad),
+      /evaluation summary/,
+    );
+  }
+});
+
+test("whole-area reports distinguish team-reported evaluation from sector sensor comparisons", () => {
+  vm.runInNewContext(read("web/js/report.js"), browser);
+  const report = browser.window.SBReport.markdown(
+    full.analysis.study_area,
+    full,
+  );
+  assert.match(report, /Team-reported project evaluation/);
+  assert.match(report, /F1: 0\.88/);
+  assert.match(report, /Precision: 92%/);
+  assert.match(report, /Recall: 86%/);
+  assert.match(report, /F1 0\.135949/);
+  const sector = browser.window.SBReport.markdown(
+    full.analysis.sectors[0],
+    full,
+  );
+  assert.doesNotMatch(sector, /Team-reported project evaluation/);
 });

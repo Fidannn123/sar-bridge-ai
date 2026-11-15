@@ -67,7 +67,11 @@ window.SBJourney = (() => {
     function setViewURL(view) {
       const url = new URL(location.href);
       url.searchParams.set("view", view);
-      if (view === "dashboard") url.hash = "";
+      if (["dashboard", "home", "atlas", "demo"].includes(view)) url.hash = "";
+      if (view !== "atlas") {
+        for (const key of ["reservoir", "lat", "lng"])
+          url.searchParams.delete(key);
+      }
       history.replaceState(null, "", url.pathname + url.search + url.hash);
     }
     function showScene(options) {
@@ -92,6 +96,12 @@ window.SBJourney = (() => {
       );
       $("#journey-controls").hidden = value !== "guided";
       $("#dashboard").hidden = value !== "dashboard";
+      $("#home").hidden = value !== "home";
+      $("#atlas").hidden = value !== "atlas";
+      for (const name of ["home", "atlas"]) {
+        $(`#btn-${name}`).classList.toggle("active", value === name);
+        $(`#btn-${name}`).setAttribute("aria-pressed", String(value === name));
+      }
       $("#btn-dashboard").classList.toggle("active", value === "dashboard");
       $("#btn-dashboard").setAttribute(
         "aria-pressed",
@@ -131,6 +141,21 @@ window.SBJourney = (() => {
       overview.refresh();
       window.scrollTo({ top: 0, behavior: "instant" });
       if (focus) $("#dashboard-title").focus({ preventScroll: true });
+    }
+    function home({ updateURL = true, focus = true } = {}) {
+      stopMotion();
+      setMode("home");
+      if (updateURL) setViewURL("home");
+      window.scrollTo({ top: 0, behavior: "instant" });
+      if (focus) $("#home-title").focus({ preventScroll: true });
+    }
+    function atlas(id, { updateURL = true, focus = true } = {}) {
+      stopMotion();
+      setMode("atlas");
+      if (updateURL) setViewURL("atlas");
+      atlasUI.open(id);
+      window.scrollTo({ top: 0, behavior: "instant" });
+      if (focus) $("#atlas-title").focus({ preventScroll: true });
     }
     function intro({ updateURL = true } = {}) {
       stopMotion();
@@ -323,12 +348,7 @@ window.SBJourney = (() => {
     });
     $(".brand").addEventListener("click", (event) => {
       event.preventDefault();
-      intro();
-      focusStage();
-      window.scrollTo({
-        top: 0,
-        behavior: reducedMotion() ? "auto" : "smooth",
-      });
+      home();
     });
     $("#btn-workspace").addEventListener("click", () => fullWorkspace());
     $("#btn-dashboard").disabled = false;
@@ -419,6 +439,29 @@ window.SBJourney = (() => {
       $("#btn-present").innerHTML =
         `${active ? "Exit presentation" : "Present"} ${fullscreenIcon}`;
     });
+    const atlasUI = SBAtlas.create({
+      data,
+      onCase: () => {
+        intro();
+        focusStage();
+        window.scrollTo({ top: 0, behavior: "instant" });
+      },
+    });
+    $("#btn-home").addEventListener("click", () => home());
+    $("#btn-atlas").addEventListener("click", () => atlas());
+    document.addEventListener("click", (event) => {
+      const place = event.target.closest("[data-atlas-reservoir]");
+      if (place) atlas(place.dataset.atlasReservoir);
+      const action =
+        event.target.closest("[data-site-action]")?.dataset.siteAction;
+      if (action === "atlas") atlas();
+      if (action === "case") {
+        intro();
+        focusStage();
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
+      if (action === "method") $("#btn-method").click();
+    });
     const workspaceRequested =
       new URL(location.href).searchParams.get("view") === "workspace" ||
       /^#(?:sector[-=]|method)/.test(location.hash);
@@ -426,7 +469,11 @@ window.SBJourney = (() => {
       fullWorkspace({ updateURL: false, restoreLayers: false });
     else if (new URL(location.href).searchParams.get("view") === "dashboard")
       dashboard({ updateURL: false, focus: false });
-    else intro({ updateURL: false });
+    else if (new URL(location.href).searchParams.get("view") === "atlas")
+      atlas(undefined, { updateURL: false, focus: false });
+    else if (new URL(location.href).searchParams.get("view") === "demo")
+      intro({ updateURL: false });
+    else home({ updateURL: false, focus: false });
     return { intro, stopMotion };
   }
   return { create };

@@ -123,25 +123,26 @@ window.SBReview = (() => {
           .join("");
       return `<section class="review-editor" aria-labelledby="review-unit-title"><div class="review-unit-title"><h3 id="review-unit-title">${label(unit)}</h3><span>${num(unit.detected_change.loss_ha)} ha <small>radar-indicated water loss</small></span></div>
         <div class="review-dual-status"><div><span>Evidence engine</span><strong class="chip ${esc(unit.conclusion.status)}">${esc(unit.conclusion.label)}</strong></div><div><span>Human review</span><strong class="human-state ${record?.outcome || "pending"}">${esc(reviewLabel(unit))}</strong></div></div>
-        <p class="review-caution">A supported hypothesis is not an expert sign-off.${unit.significant_change && p.loss.f1 !== null && p.loss.f1 < 0.5 ? ` Pixel-wise loss overlap with the optical proxy is limited (F1 ${num(p.loss.f1, 3)}). Inspect the images and the comparison.` : ""}</p>
+        <p class="review-caution">${unit.significant_change ? `Review the mapped change and its evidence, then record your assessment.${p.loss.f1 !== null && p.loss.f1 < 0.5 ? ` Radar and optical loss locations have limited overlap (F1 ${num(p.loss.f1, 3)} / 1). Check the Sensor comparison tab.` : ""}` : unit.conclusion.status === "no_change" ? `Measured loss: ${num(unit.detected_change.loss_ha)} ha; gain: ${num(unit.detected_change.gain_ha)} ha. The combined change is below the ${num(data.analysis.rules.min_change_ha, 0)} ha significance threshold. No environmental cause is assigned.` : esc(unit.conclusion.reason)}</p>
         <form id="human-review-form"><div class="review-form-grid"><label>Reviewer name<input name="reviewer" required minlength="2" maxlength="100" autocomplete="name" placeholder="Your name"></label><label>Review outcome<select name="outcome" required><option value="">Select outcome</option>${options(SBReviewStore.outcomes)}</select></label><label class="review-form-wide">Rationale<textarea name="rationale" required minlength="20" maxlength="2000" rows="3" placeholder="Describe the evidence you checked, uncertainties and the reason for your review outcome."></textarea></label><label><span>Evidence reference <small>(optional)</small></span><input name="evidence_reference" maxlength="500" placeholder="https://… or document ID"></label><label>Next action<select name="next_action" required><option value="">Select next action</option>${options(SBReviewStore.actions)}</select></label></div><div class="review-form-actions"><button type="submit" class="journey-primary" ${store ? "" : "disabled"}>Save review</button><button type="button" class="btn" data-review-action="export-log" ${store ? "" : "disabled"}>Export review log</button><button type="button" class="journey-text-button" data-review-action="open-map">Open area on map ↗</button></div><p class="review-muted">Next actions are recorded recommendations. No requests are sent to an agency or operator.</p></form>
         ${historyHTML(unit)}<p class="review-identity-note">Reviewer names are self-reported. This local demo does not authenticate identities or issue scientific sign-offs.</p></section>`;
     }
     function comparisonHTML(unit) {
       const p = proxyFor(unit);
       const referenceDates = validation.optical_scenes;
-      return `<section class="review-validation" aria-labelledby="validation-unit-title"><h3 id="validation-unit-title">${label(unit)} · optical-proxy comparison</h3><p class="review-lead">Pixel-wise comparison of NISAR change with cloud-masked Sentinel-2 change. These are sensor-agreement metrics, not ground-truth accuracy.</p>
+      return `<section class="review-validation" aria-labelledby="validation-unit-title"><h3 id="validation-unit-title">${label(unit)} · sensor comparison</h3><p class="review-lead">Do radar and optical images place the change in the same locations? We compare NISAR with cloud-masked Sentinel-2, pixel by pixel.</p>
         <div class="validation-context"><div><span>Common-valid comparison area</span><strong>${num(p.common_valid_ha)} ha</strong></div><div><span>Excluded from comparison</span><strong>${num(p.excluded_from_comparison_ha)} ha</strong></div><div><span>After water-mask agreement</span><strong>${pct(p.after_water_mask_agreement)}</strong></div></div>
-        <p class="review-caution">Stable water and land dominate overall agreement. It must not be reported as change-detection accuracy or AI confidence.</p>
+        <p class="metric-explainer"><strong>Two different questions.</strong> Water-mask agreement asks whether both sensors see water or land on the after date. The scores below ask whether they detect the <strong>same change</strong>. Stable areas can produce high mask agreement even when change overlap is low. Sentinel-2 is a comparison source, not field ground truth.</p>
+        <dl class="validation-glossary"><div><dt>Precision</dt><dd>Of the loss mapped by radar, how much also appears in optical?</dd></div><div><dt>Recall</dt><dd>Of the loss mapped by optical, how much does radar find?</dd></div><div><dt>F1 · 0 to 1</dt><dd>Balances precision and recall. A value closer to 1 means stronger overlap.</dd></div><div><dt>IoU · 0 to 1</dt><dd>The shared change area divided by the combined change area.</dd></div></dl>
         <div class="review-table-scroll"><table class="validation-table"><caption>Class-specific metrics against the optical proxy</caption><thead><tr><th>Change class</th><th>Precision</th><th>Recall</th><th>F1</th><th>IoU</th></tr></thead><tbody>${["loss", "gain"].map((kind) => `<tr><th>Water ${kind}</th><td>${pct(p[kind].precision)}</td><td>${pct(p[kind].recall)}</td><td>${num(p[kind].f1, 3)}</td><td>${num(p[kind].iou, 3)}</td></tr>`).join("")}</tbody></table></div>
-        <div class="review-table-scroll"><table class="validation-table"><caption>Comparison counts · pixels on the common-valid ${validation.method.grid_m} m grid</caption><thead><tr><th>Change class</th><th>Overlap (TP)</th><th>Radar only (FP)</th><th>Optical only (FN)</th><th>Neither (TN)</th></tr></thead><tbody>${["loss", "gain"].map((kind) => `<tr><th>Water ${kind}</th>${["tp_px", "fp_px", "fn_px", "tn_px"].map((key) => `<td>${num(p[kind][key], 0)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+        <details class="validation-technical"><summary>Technical details: pixel counts &amp; formulas</summary><div class="review-table-scroll"><table class="validation-table"><caption>Comparison counts · pixels on the common-valid ${validation.method.grid_m} m grid</caption><thead><tr><th>Change class</th><th>Overlap (TP)</th><th>Radar only (FP)</th><th>Optical only (FN)</th><th>Neither (TN)</th></tr></thead><tbody>${["loss", "gain"].map((kind) => `<tr><th>Water ${kind}</th>${["tp_px", "fp_px", "fn_px", "tn_px"].map((key) => `<td>${num(p[kind][key], 0)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
         <p class="review-muted">Precision = TP / (TP + FP); recall = TP / (TP + FN); F1 = 2TP / (2TP + FP + FN); IoU = TP / (TP + FP + FN). “n/a” means an empty denominator. FP and FN are disagreements with the proxy, not field-confirmed errors.</p>
-        <details class="validation-provenance" open><summary>Dates, method &amp; limitations</summary><dl><dt>NISAR</dt><dd>${validation.radar_dates.map(esc).join(" → ")}</dd><dt>Sentinel-2</dt><dd>${esc(referenceDates.before.datetime_utc)} → ${esc(referenceDates.after.datetime_utc)}</dd></dl><ul>${validation.limitations.map((text) => `<li>${esc(text)}</li>`).join("")}</ul></details>
+        </details><details class="validation-provenance"><summary>Dates, method &amp; limitations</summary><dl><dt>NISAR</dt><dd>${validation.radar_dates.map(esc).join(" → ")}</dd><dt>Sentinel-2</dt><dd>${esc(referenceDates.before.datetime_utc)} → ${esc(referenceDates.after.datetime_utc)}</dd></dl><ul>${validation.limitations.map((text) => `<li>${esc(text)}</li>`).join("")}</ul></details>
         <div class="validation-unavailable"><strong>Field validation: not yet available</strong><p>No independently labelled field dataset has been used. Human review records do not automatically become ground truth.</p></div>
         <button class="btn" type="button" data-review-action="export-comparison">Export comparison JSON</button></section>`;
     }
     function revealSelectedQueueItem() {
-      if (root.hidden || !matchMedia("(max-width: 900px)").matches) return;
+      if (root.hidden) return;
       const queue = root.querySelector(".review-queue");
       const selectedButton = queue.querySelector('[aria-pressed="true"]');
       queue.scrollLeft = selectedButton.offsetLeft - queue.offsetLeft - 10;
@@ -153,6 +154,14 @@ window.SBReview = (() => {
         const active = button.dataset.reviewTab === tab;
         button.classList.toggle("active", active);
         button.setAttribute("aria-pressed", String(active));
+      });
+      $("#review-title").textContent =
+        tab === "validation" ? "Sensor comparison" : "Human review";
+      root.querySelectorAll(".review-workflow > *").forEach((item, index) => {
+        const current = index === (tab === "validation" ? 2 : 3);
+        item.classList.toggle("current", current);
+        if (current) item.setAttribute("aria-current", "step");
+        else item.removeAttribute("aria-current");
       });
       $("#review-package").textContent =
         `Package ${validation.package_id.slice(0, 12)} · NISAR ${validation.radar_dates.join(" → ")}`;

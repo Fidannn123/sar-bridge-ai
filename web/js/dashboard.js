@@ -72,8 +72,6 @@ window.SBDashboard = (() => {
         year: "numeric",
         timeZone: "UTC",
       });
-    const percent = (value) =>
-      value === null || value === undefined ? "n/a" : `${num(value * 100)}%`;
     const humanLabel = (state) =>
       ({
         pending: "Pending",
@@ -81,9 +79,12 @@ window.SBDashboard = (() => {
         ...SBReviewStore.outcomes,
       })[state];
     let changedOnly = false;
-    const comparison = data.validation.study_area,
-      total = data.analysis.study_area,
+    const total = data.analysis.study_area,
       dc = total.detected_change;
+    function evaluationHTML() {
+      const result = data.evaluation;
+      return `<section class="dashboard-performance" aria-labelledby="evaluation-title"><p class="comparison-score-label">PROJECT / TEAM-REPORTED RESULTS</p><h2 id="evaluation-title">Evaluation summary</h2><div class="evaluation-f1"><span>F1 score</span><strong id="evaluation-f1">${num(result.f1, 2)}<small> / 1</small></strong></div><dl class="evaluation-rates"><div><dt>Precision</dt><dd id="evaluation-precision">${num(result.precision * 100, 0)}<small>%</small></dd></div><div><dt>Recall</dt><dd id="evaluation-recall">${num(result.recall * 100, 0)}<small>%</small></dd></div></dl><p class="dashboard-small">Source: project team. Evaluation dataset and averaging method have not been supplied.</p></section>`;
+    }
     function refresh() {
       const summary = summarize(data, (unit) => SBReview.reportFor(unit));
       const rows = summary.rows.filter(
@@ -111,7 +112,7 @@ window.SBDashboard = (() => {
             .join(
               "",
             )}<span>This counts rules separately from people.</span></div></section>
-          <aside class="dashboard-rail" aria-label="Independent comparison and human review"><section class="dashboard-comparison"><h2>Independent comparison</h2><div class="dashboard-f1">F1 <strong>${num(comparison.loss.f1, 3)}</strong></div><p>Water-loss overlap with Sentinel-2</p><p class="dashboard-comparison-note">${comparison.loss.f1 !== null && comparison.loss.f1 < 0.5 ? "Limited overlap — investigate disagreements." : "Inspect the comparison and its limitations."}</p><dl><div><dt>Precision</dt><dd>${percent(comparison.loss.precision)}</dd></div><div><dt>Recall</dt><dd>${percent(comparison.loss.recall)}</dd></div><div><dt>IoU</dt><dd>${num(comparison.loss.iou, 3)}</dd></div></dl><button class="journey-text-button" data-dashboard-action="validation" type="button">Inspect full validation <span aria-hidden="true">→</span></button><p class="dashboard-small">Optical proxy, not field ground truth. Overall mask agreement ${percent(comparison.after_water_mask_agreement)} is not change accuracy.</p></section>
+          <aside class="dashboard-rail" aria-label="Team-reported evaluation and human review">${evaluationHTML()}
           <section class="dashboard-human"><h2>Human review</h2><p id="dashboard-review-summary">${summary.storage_available ? `<strong>${summary.recorded} of ${summary.total}</strong> sectors have a recorded review.` : "Local storage is unavailable. Review coverage cannot be determined."}</p>${summary.storage_available ? `<progress value="${summary.recorded}" max="${summary.total}" aria-label="Sectors with a recorded local review">${summary.recorded} / ${summary.total}</progress>` : ""}<dl>${Object.entries(
             summary.human,
           )
